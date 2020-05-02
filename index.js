@@ -1,12 +1,13 @@
 var express = require('express');
-/* Don't need db at the moment, only static files
+/* Don't need db at the moment
 var mysql = require('./dbcon.js');
 */
 var app = express();
+
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 //Set default directory
-app.use(express.static('../public'));
+app.use(express.static(__dirname + '/public'));
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
