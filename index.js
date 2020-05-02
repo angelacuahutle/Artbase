@@ -3,10 +3,9 @@ var express = require('express');
 var mysql = require('./dbcon.js');
 */
 var app = express();
-
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
-//Set default directory
+//Sets default directory
 app.use(express.static(__dirname + '/public'));
 
 app.engine('handlebars', handlebars.engine);
