@@ -32,6 +32,36 @@ app.get('/search',function(req,res,next){
     res.render('home');
 });
 
+app.get('/events', function(req,res){
+    var context = {};
+    res.render('events', context);
+});
+
+app.get('/upload-artwork', function(req,res){
+    var context = {};
+    res.render('upload-artwork', context);
+});
+
+app.get('/image-artist', function(req,res){
+    var context = {};
+    res.render('image-artist', context);
+});
+
+app.get('/image-user', function(req,res){
+    var context = {};
+    res.render('image-user', context);
+});
+
+app.get('/artist-portfolio', function(req,res){
+    var context = {};
+    res.render('artist-portfolio', context);
+});
+
+app.get('/user-events', function(req,res){
+    var context = {};
+    res.render('user-events', context);
+});
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');
