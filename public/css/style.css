@@ -1,3 +1,4 @@
-#test {
-    background-color: blue;
+img.artwork-image {
+    height:auto;
+    max-width: 50%;
 }
