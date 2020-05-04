@@ -30,14 +30,15 @@ app.get('/upload', function(req,res,next) {
   context.type = "artist/user";
   res.render('upload-artwork', context);
 });
-
+/*
+Inactive for step 3 draft
 app.post('/upload', function(req,res,next) {
   //pushes entered parameters to fakedb
   artworkData.push(
     {
       title: req.body.title,
       medium: req.body.medium,
-      materials: req.body.material,
+      materials: req.body.materials,
       description: req.body.description,
       rating: 0,
       url: req.body.url
@@ -58,23 +59,23 @@ app.post('/upload', function(req,res,next) {
 app.get('/upload2', function(req,res,next) {
   res.render('upload');
 })
-
+*/
 app.get('/signup',function(req,res,next){
   var context = {};
   context.type = "user";
-  res.render('home');
+  res.render('signup', context);
 });
 
 app.get('/login',function(req,res,next){
   var context = {};
-  context.type = "artist/user";
-  res.render('home');
+  context.type = "user";
+  res.render('login', context);
 });
 
 app.get('/search',function(req,res,next){
   var context = {};
   context.type = "artist/user";
-  res.render('search');
+  res.render('search', context);
 });
 
 app.get('/events', function(req,res){

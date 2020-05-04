@@ -1,9 +1,13 @@
-<main class="homepage-content">
-    <section id="artwork-posts">
-        <div id="artworks">
+<div class="col-md-8 mx-auto">
+    
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
             {{#each artworkData}}
+            <div class="card">   
                 {{> image}}
+            </div> 
             {{/each}}
         </div>
-    </section>
-</main>
+    </div>
+    
+</div>
