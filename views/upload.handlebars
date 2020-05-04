@@ -1,0 +1,37 @@
+<head>
+    <script src="js/upload.js" defer></script>
+</head>
+
+<div class="upload-header">
+    <h1>Upload Artwork</h1>
+</div>
+<div class="upload-body">
+    <div class="upload-input">
+        <label for="title-input">Artwork Title</label>
+        <input type="text" id="title-input">
+    </div>
+    <div class="upload-input">
+        <label for="title-input">Artwork Medium</label>
+        <input type="text" id="medium-input">
+    </div>
+    <div class="upload-input">
+        <label for="title-input">Artwork Materials</label>
+        <input type="text" id="materials-input">
+    </div>
+    <div class="upload-input">
+        <label for="title-input">Artwork Description</label>
+        <input type="text" id="desc-input">
+    </div>
+    <div class="upload-input">
+        <label for="title-input">Artwork URL</label>
+        <input type="text" id="url-input">
+    </div>
+    <!--Upload file input-->
+    <div class="upload-input">
+        <input type="file" accept="image/*" onchange="loadFile(event)" id="file-input" name="image">
+    </div>
+    <div class="upload-buttons">
+        <button type="button" id="upload-cancel" class="action-button">Cancel</button>
+        <button type="button" id="upload-submit" class="action-button">Upload</button>
+    </div>
+</div>
