@@ -1,26 +1,26 @@
 [
   {
-    "title": "test1",
-    "medium": "asd",
-    "materials": "dfg",
-    "description": "aF",
+    "title": "Brown Wooden Planks",
+    "medium": "Abstract",
+    "materials": "Wood paint, fence wood",
+    "description": "Painting done on separated fence pickets",
     "rating" : 0,
-    "url": "https://www.moma.org/media/W1siZiIsIjQ2NzUxNyJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4MjAwMFx1MDAzZSJdXQ.jpg?sha=314ebf8cc678676f"
+    "url": "https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg"
   },
   {
-    "title": "test2",
-    "medium": "fdg",
-    "materials": "asda",
-    "description": "ghjgh",
+    "title": "Blue, Orange, and White Abstract Painting",
+    "medium": "Abstract",
+    "materials": "Oil, paper canvas",
+    "description": "",
     "rating" : 0,
-    "url": "https://businessbrokercolorado.com/wp-content/uploads/2019/10/art.jpg"
+    "url": "https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg"
   },
   {
-    "title": "test3",
-    "medium": "sdfasd",
-    "materials": "mfmfdskg",
-    "description": "dasda",
+    "title": "Beach Wave",
+    "medium": "Photograph",
+    "materials": "",
+    "description": "Digitally enhanced photograph of a wave",
     "rating": 0,
-    "url": "https://stackabuse.com/assets/images/logo-coinbase.png?v=7df138796b"
+    "url": "https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg"
   }
 ]
