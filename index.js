@@ -41,7 +41,6 @@ app.post('/upload', function(req,res,next) {
       url: req.body.url
     }
   );
-  console.log(artworkData);
   fs.writeFile(__dirname + '/fakedb.json', JSON.stringify(artworkData, 2, 2),
     function(err) {
       if(!err) {
@@ -62,13 +61,33 @@ app.get('/login',function(req,res,next){
     res.render('home');
 });
 
-app.get('/artist',function(req,res,next){
-    res.render('home');
-});
-
 app.get('/search',function(req,res,next){
     res.render('home');
 });
+
+app.get('/events', function(req,res){
+    var context = {};
+    res.render('events', context);
+});
+
+app.get('/image-artist', function(req,res){
+    var context = {};
+    res.render('image-artist', context);
+});
+
+app.get('/image-user', function(req,res){
+    var context = {};
+    res.render('image-user', context);
+});
+
+app.get('/artist-portfolio', function(req,res){
+    var context = {};
+    res.render('artist-portfolio', context);
+});
+
+app.get('/user-events', function(req,res){
+    var context = {};
+    res.render('user-events', context);
 
 app.get('/image', function(req,res,next) {
     res.render('image');

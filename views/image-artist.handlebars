@@ -1,0 +1,108 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">ArtBase</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/artist-portfolio">Portfolio</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      Logged in as Artist
+    </span>
+  </div>
+</nav>
+
+<div class="col-md-8 mx-auto">
+<h1>Image View</h1>
+<div class="card mb-3">
+  <img src="https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Teal</h5>
+    <p class="card-text">Photo by<button id="portfolio" type="button" class="btn btn-link" onClick="reply_click(this.id)">Amber Lamoreaux</button>from Pexels</p>
+  </div>
+  
+  <div class="card-body">
+    <div class="table-responsive" id="eventsTable">
+        <table class="table">
+        <h5>Events</h5>
+        <thead class="thead">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+                <th scope="col">Time</th>
+                <th scope="col">Location</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Zip Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td><button type="button" class="btn btn-primary">Remove</button></td>
+                <td>Plaza Art Fair</td>
+                <td>9/25/20</td>
+                <td>9/27/20</td>
+                <td>10:00:00</td>
+                <td>Country Club Plaza</td>
+                <td>Kansas City</td>
+                <td>MO</td>
+                <td>64112</td>
+            </tr>
+            <tr>
+                <td><button type="button" class="btn btn-primary">Remove</button></td>
+                <td>Bayou City Art Festival</td>
+                <td>10/10/20</td>
+                <td>10/11/20</td>
+                <td>10:00:00</td>
+                <td>6501 Memorial Dr.</td>
+                <td>Houston</td>
+                <td>TX</td>
+                <td>77007</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+</div>
+</div>
+<h4>Add Event</h4>
+  <div class="form-group row">
+    <label for="eventsSelect" class="col-sm-2 col-form-label">Select event</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="eventsSelect" required>
+        <option value="">Dropdown will list all events</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+      <button id="/events" type="button" class="btn btn-link" onClick="reply_click(this.id)">Create new event</button>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-10">
+      <button id="add" type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+function reply_click(clicked_id)
+{
+    if (clicked_id == "portfolio") {
+      alert("Goes to /artist-portfolio.")
+    }
+    if (clicked_id == "/events") {
+      alert("If event is not listed in the dropdown, artists can create a new event that will populate in the dropdown. Goes to /events.");
+    }
+}
+</script>
