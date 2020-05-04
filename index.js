@@ -19,14 +19,16 @@ app.set('view engine', 'handlebars');
 app.set('port', 7791);
 
 app.get('/',function(req,res,next){
-  console.log(artworkData);
-  var content = {};
-  content.artworkData = artworkData;
-  res.render('home', content);
+  var context = {};
+  context.type = "artist/user";
+  context.artworkData = artworkData;
+  res.render('home', context);
 });
 
 app.get('/upload', function(req,res,next) {
-    res.render('upload');
+  var context = {};
+  context.type = "artist/user";
+  res.render('upload-artwork', context);
 });
 
 app.post('/upload', function(req,res,next) {
@@ -53,44 +55,56 @@ app.post('/upload', function(req,res,next) {
   );
 });
 
+app.get('/upload2', function(req,res,next) {
+  res.render('upload');
+})
+
 app.get('/signup',function(req,res,next){
-    res.render('home');
+  var context = {};
+  context.type = "user";
+  res.render('home');
 });
 
 app.get('/login',function(req,res,next){
-    res.render('home');
+  var context = {};
+  context.type = "artist/user";
+  res.render('home');
 });
 
 app.get('/search',function(req,res,next){
-    res.render('home');
+  var context = {};
+  context.type = "artist/user";
+  res.render('search');
 });
 
 app.get('/events', function(req,res){
-    var context = {};
-    res.render('events', context);
+  var context = {};
+  context.type = "artist";
+  res.render('events', context);
 });
 
 app.get('/image-artist', function(req,res){
-    var context = {};
-    res.render('image-artist', context);
+  var context = {};
+  context.type = "artist";
+  res.render('image-artist', context);
 });
 
 app.get('/image-user', function(req,res){
-    var context = {};
-    res.render('image-user', context);
+  var context = {};
+  context.type = "user";
+  res.render('image-user', context);
 });
 
 app.get('/artist-portfolio', function(req,res){
-    var context = {};
-    res.render('artist-portfolio', context);
+  var context = {};
+  context.type = "artist/user";
+  res.render('artist-portfolio', context);
 });
 
 app.get('/user-events', function(req,res){
-    var context = {};
-    res.render('user-events', context);
-
-app.get('/image', function(req,res,next) {
-    res.render('image');
+  var context = {};
+  context.type = "user";
+  res.render('user-events', context);
 });
 
 app.use(function(req,res){
@@ -105,5 +119,5 @@ app.use(function(err, req, res, next){
 });
 
 app.listen(app.get('port'), function(){
-  console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
+  console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.')
 });

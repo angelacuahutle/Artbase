@@ -5,19 +5,51 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <ul>
-        <li><a href="/">Homepage</li>
-        <li><a href="/signup">Signup</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/artist">Artist Page</a></li>
-        <li><a href="/events">Events</a></li>
-    </ul>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">ArtBase</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio">Portfolio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user-events">User Events Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Artist Events Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-user">User Image Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-artist">Artist Image Page</a>
+            </li>
+            <form class="nav-link" action="/upload">
+                <input class="btn btn-primary" type="submit" value="Upload Artwork" id="upload-artwork-button">
+            </form>
+        </ul>
+        <span class="navbar-text">
+            Logged in as {{type}}
+        </span>
+        <form class="form-inline" action="/search">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" id="search-submit" type="submit" onClick="reply_click(this.id)">Search</button>
+        </form>
+    </div>
+    </nav>
 </head>
 <body>
-    <header>
-        <h1 class="site-title">Artbase</h1>
-    </header>
     {{{body}}}
-	</div>
 </body>
+<script>
+    function reply_click(clicked_id) {
+        if (clicked_id == "search-submit") {
+        alert("Searches artwork for keywords")
+        }
+    }
+</script>
 </html>

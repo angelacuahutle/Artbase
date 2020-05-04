@@ -2,3 +2,7 @@ img.artwork-image {
     height:auto;
     max-width: 50%;
 }
+
+li.nav-link {
+   font-size: 20px;
+}
