@@ -60,16 +60,24 @@ app.get('/upload2', function(req,res,next) {
   res.render('upload');
 })
 */
-app.get('/signup',function(req,res,next){
+app.get('/user-signup',function(req,res,next){
   var context = {};
-  context.type = "user";
-  res.render('signup', context);
+  res.render('user-signup', context);
 });
 
-app.get('/login',function(req,res,next){
+app.get('/user-login',function(req,res,next){
   var context = {};
-  context.type = "user";
-  res.render('login', context);
+  res.render('user-login', context);
+});
+
+app.get('/artist-signup',function(req,res,next){
+  var context = {};
+  res.render('artist-signup', context);
+});
+
+app.get('/artist-login',function(req,res,next){
+  var context = {};
+  res.render('artist-login', context);
 });
 
 app.get('/search',function(req,res,next){
