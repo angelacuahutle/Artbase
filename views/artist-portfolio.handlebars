@@ -1,70 +1,58 @@
-<div class="col-md-8 mx-auto">
-<h1>Artist Name</h1>
-<!--
-<div class="col mb-4">
-  <button id="upload-artwork" type="button" class="btn btn-primary" onClick="reply_click(this.id)">Upload Artwork</button>
+<div class="container-fluid page-container">
+  <div class="row justify-content-center page-row">
+    <div class="col-md-8"></br>
+      <h1>Artist Name</h1></br>
+      <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Teal</h5>
+              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link" onClick="location.href = '/image-artist';">View or add events</button></small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">RBG</h5>
+              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Splash</h5>
+              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-4">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Liquify</h5>
+              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><button  id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
--->
 
-<div class="row row-cols-1 row-cols-md-2">
-  <div class="col mb-4">
-    <div class="card">
-      <img src="https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Teal</h5>
-        <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-      </div>
-      <div class="card-footer">
-        <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link" onClick="reply_click(this.id)">View or add events</button></small>
-      </div>
-    </div>
-  </div>
-  <div class="col mb-4">
-    <div class="card">
-      <img src="https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">RBG</h5>
-        <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-      </div>
-      <div class="card-footer">
-        <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link" onClick="reply_click(this.id)">View or add events</button></small>
-      </div>
-    </div>
-  </div>
-  <div class="col mb-4">
-    <div class="card">
-      <img src="https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Splash</h5>
-        <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-      </div>
-      <div class="card-footer">
-        <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link" onClick="reply_click(this.id)">View or add events</button></small>
-      </div>
-    </div>
-  </div>
-  <div class="col mb-4">
-    <div class="card">
-      <img src="https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Liquify</h5>
-        <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-      </div>
-      <div class="card-footer">
-        <small class="text-muted"><button  id="image-artist" type="button" class="btn btn-link" onClick="reply_click(this.id)">View or add events</button></small>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-function reply_click(clicked_id)
-{
-    if (clicked_id == "image-artist") {
-    alert("'View or add events' button visible on artist accounts. Lets artists view or add events to artwork. 'Goes to /image-artist. 'View events' button visible on user accounts. Lets users view events for artwork. Goes to /image-user.");
-    }
-    if (clicked_id == "upload-artwork") {
-    alert("Button visible on artist accounts. Lets artists upload new artwork. Goes to /upload-artwork.");
-    }
-}
-</script>
