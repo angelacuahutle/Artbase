@@ -1,50 +1,45 @@
-<div class="container">
-  <div class="col-md-8 mx-auto">
-  <h1>Upload Artwork</h1>
-  <form>
-    <h3>Artwork Details</h3>
-    <div class="form-group">
-      <label for="titleInput">Title</label>
-      <input id="titleInput" class="form-control" type="text" name="title" required>
-    </div>
-    <div class="form-group">
-      <input id="urlInput" class="form-control-file" type="file" name="url" accept="image/png, image/jpeg">
-    </div>
-    <div class="form-group">
-      <label for="mediumInput">Medium</label>
-      <input id="mediumInput" class="form-control" type="text" name="medium" required>
-    </div>
-    <div class="form-group">
-      <label for="materialInput">Materials</label>
-      <input id="materialInput" class="form-control" type="text" name="material" placeholder="material1, material2, etc." required>
-    </div>
-    <div class="form-group">
-      <label for="descriptionInput">Description</label>
-      <textarea id="descriptionInput" class="form-control" type="text" name="description" rows="3"></textarea>
-    </div>
+<div class="container-fluid page-container">
+  <div class="row justify-content-center page-row">
+    <div class="col-md-4"></br>
+      <h1>Upload Artwork</h1></br>
+      <form>
+        <h3>Artwork Details</h3>
+        <div class="form-group">
+          <label for="titleInput">Title</label>
+          <input id="titleInput" class="form-control" type="text" name="title" required>
+        </div>
+        <div class="form-group">
+          <input id="urlInput" class="form-control-file" type="file" name="url" accept="image/png, image/jpeg">
+        </div>
+        <div class="form-group">
+          <label for="mediumInput">Medium</label>
+          <input id="mediumInput" class="form-control" type="text" name="medium" required>
+        </div>
+        <div class="form-group">
+          <label for="materialInput">Materials</label>
+          <input id="materialInput" class="form-control" type="text" name="material" placeholder="material1, material2, etc." required>
+        </div>
+        <div class="form-group">
+          <label for="descriptionInput">Description</label>
+          <textarea id="descriptionInput" class="form-control" type="text" name="description" rows="3"></textarea>
+        </div>
 
-    <h3>Events</h3>
-    <div class="form-group">
-      <label for="eventsSelect">Select an event where artwork will be displayed</label>
-      <select class="form-control" id="eventsSelect" required>
-        <option value="">Dropdown will list all events</option>
-      </select>
+        <h3>Events</h3>
+        <div class="form-group">
+          <label for="eventsSelect">Select an event where artwork will be displayed</label>
+          <select class="form-control" id="eventsSelect" required>
+            <option value="">Dropdown will list all events</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button id="/events" type="button" class="btn btn-link" onClick="location.href = '/events';">Create new event</button>
+        </div>
+        <div class="form-group">
+          <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <button id="/events" type="button" class="btn btn-link" onClick="reply_click(this.id)">Create new event</button>
-    </div>
-    <div class="form-group">
-      <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
+  </div>
 </div>
 
-<script type="text/javascript">
-function reply_click(clicked_id)
-{
-    if (clicked_id == "/events") {
-      alert("If event is not listed in the dropdown, artists can create a new event that will populate in the dropdown. Goes to /events.");
-    }
-}
-</script>
 

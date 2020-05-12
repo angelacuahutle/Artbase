@@ -19,7 +19,7 @@ app.set('view engine', 'handlebars');
 app.set('port', 7791);
 
 app.get('/',function(req,res,next){
-  var context = {};
+  var context = {}; 
   context.type = "artist/user";
   context.artworkData = artworkData;
   res.render('home', context);

@@ -1,102 +1,119 @@
-<!--<div id="eventsTable"></div>
-<script src="js/script.js"></script> -->
+<div class="container-fluid page-container">
+  	<div class="row justify-content-center page-row">
+    	<div class="col-md-8"></br>
+			<h1>Events</h1></br>
 
-<div class="col-md-8 mx-auto">
+			<h3>Create New Event</h3>
+			<form>
+			  	<div class="form-row">
+			    	<div class="form-group col-md-5">
+			      		<label for="nameInput">Name</label>
+			      		<input id="nameInput" class="form-control" type="text" name="name">
+			    	</div>
+			    	<div class="form-group col-md-2">
+			      		<label for="startDateInput">Start</label>
+			      		<input id="startDateInput" class="form-control" type="date" name="startDate">
+			    	</div>
+			    	<div class="form-group col-md-2">
+			      		<label for="endDateInput">End</label>
+			     		<input id="endDateInput" class="form-control" type="date" name="endDate">
+			    	</div>
+			    	<div class="form-group col-md-3">
+			      		<label for="timeInput">Time</label>
+			      		<input id="timeInput" class="form-control" type="time" name="time">
+			    	</div>
+			  	</div>
+			  	<div class="form-row">
+				  	<div class="form-group col-md-5">
+				    	<label for="locationInput">Address</label>
+				    	<input id="locationInput" class="form-control" type="text" name="location">
+				  	</div>
+				  	<div class="form-group col-md-2">
+				    	<label for="cityInput">City</label>
+				    	<input id="cityInput" class="form-control" type="text" name="city">
+				  	</div>
+					<div class="form-group col-md-2">
+				    	<label for="stateInput">State</label>
+				    	<input id="stateInput" class="form-control" type="text" name="location">
+				  	</div>
+				  	<div class="form-group col-md-3">
+				    	<label for="zipCodeInput">Zip Code</label>
+				    	<input id="zipCodeInput" class="form-control" type="text" name="zipCode">
+				  	</div>
+				</div>
+				<div class="form-inLine">
+						<button type="button" class="btn btn-primary">Add Event</button>	
+				</div>
+			</form></br></br>
 
-<h1>Events</h1>	
-
-<h3>Create New Event</h3>
-<form>
-  	<div class="form-row">
-    	<div class="form-group col-md-5">
-      		<label for="nameInput">Name</label>
-      		<input id="nameInput" class="form-control" type="text" name="name">
-    	</div>
-    	<div class="form-group col-md-2">
-      		<label for="startDateInput">Start</label>
-      		<input id="startDateInput" class="form-control" type="date" name="startDate">
-    	</div>
-    	<div class="form-group col-md-2">
-      		<label for="endDateInput">End</label>
-     		<input id="endDateInput" class="form-control" type="date" name="endDate">
-    	</div>
-    	<div class="form-group col-md-3">
-      		<label for="timeInput">Time</label>
-      		<input id="timeInput" class="form-control" type="time" name="time">
-    	</div>
-  	</div>
-  	<div class="form-row">
-	  	<div class="form-group col-md-5">
-	    	<label for="locationInput">Address</label>
-	    	<input id="locationInput" class="form-control" type="text" name="location">
-	  	</div>
-	  	<div class="form-group col-md-2">
-	    	<label for="cityInput">City</label>
-	    	<input id="cityInput" class="form-control" type="text" name="city">
-	  	</div>
-		<div class="form-group col-md-2">
-	    	<label for="stateInput">State</label>
-	    	<input id="stateInput" class="form-control" type="text" name="location">
-	  	</div>
-	  	<div class="form-group col-md-3">
-	    	<label for="zipCodeInput">Zip Code</label>
-	    	<input id="zipCodeInput" class="form-control" type="text" name="zipCode">
-	  	</div>
+			<div class="row justify-content-between">
+				<div class="col-md-4">
+					<h3>View Events</h3>
+				</div>
+				<div class="col-md-4">
+					<form action="/events" method="get">
+						<div class="form-inline">
+					      	<input id="name_search_string" class="form-control mr-sm-2" type="text" aria-label="Search" name="name_search_string" value="">
+					      	<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					    </div>
+					</form>
+				</div>
+			</div></br>
+		
+			<div class="table-responsive" id="eventsTable">
+			  	<table class="table">
+					<thead class="thead-light">
+				    	<tr>
+					      	<th scope="col">Name</th>
+					      	<th scope="col">Start</th>
+					      	<th scope="col">End</th>
+					      	<th scope="col">Time</th>
+					      	<th scope="col">Location</th>
+					      	<th scope="col">City</th>
+					      	<th scope="col">State</th>
+					      	<th scope="col">Zip Code</th>
+					      	<th scope="col"></th>
+				    	</tr>
+				  	</thead>
+				  	<tbody>
+				  		<tr>
+					      	<td>Plaza Art Fair</td>
+					      	<td>9/25/20</td>
+					      	<td>9/27/20</td>
+					      	<td>10:00:00</td>
+					      	<td>Country Club Plaza</td>
+					      	<td>Kansas City</td>
+					      	<td>MO</td>
+					      	<td>64112</td>
+					      	<td><button type="button" class="btn btn-primary">Edit</button></td>
+				    	</tr>
+				    	<tr>
+						    <td>Bayou City Art Festival</td>
+					      	<td>10/10/20</td>
+					      	<td>10/11/20</td>
+					      	<td>10:00:00</td>
+					      	<td>6501 Memorial Dr.</td>
+					      	<td>Houston</td>
+					      	<td>TX</td>
+					      	<td>77007</td>
+					      	<td><button type="button" class="btn btn-primary">Edit</button></td>
+				    	</tr>
+				    	<tr>
+						    <td>Gold Coast Art Fair</td>
+					      	<td>8/15/20</td>
+					      	<td>8/16/20</td>
+					      	<td>10:00:00</td>
+					      	<td>S Lake Shore Dr.</td>
+					      	<td>Chicago</td>
+					      	<td>IL</td>
+					      	<td>60601</td>
+					      	<td><button type="button" class="btn btn-primary">Edit</button></td>
+				    	</tr>
+				  	</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
-	<div class="form-inLine">
-			<button type="button" class="btn btn-primary">Add Event</button>
-			<button type="button" class="btn btn-secondary">Edit Event</button>
-	</div>
-</form>
-
-<div class="table-responsive" id="eventsTable">
-  	<table class="table">
-  	<h3>View Events</h3>
-		<thead class="thead-light">
-	    	<tr>
-		      	<th scope="col">Name</th>
-		      	<th scope="col">Start</th>
-		      	<th scope="col">End</th>
-		      	<th scope="col">Time</th>
-		      	<th scope="col">Location</th>
-		      	<th scope="col">City</th>
-		      	<th scope="col">State</th>
-		      	<th scope="col">Zip Code</th>
-	    	</tr>
-	  	</thead>
-	  	<tbody>
-	  		<tr>
-		      	<td>Plaza Art Fair</td>
-		      	<td>9/25/20</td>
-		      	<td>9/27/20</td>
-		      	<td>10:00:00</td>
-		      	<td>Country Club Plaza</td>
-		      	<td>Kansas City</td>
-		      	<td>MO</td>
-		      	<td>64112</td>
-	    	</tr>
-	    	<tr>
-			    <td>Bayou City Art Festival</td>
-		      	<td>10/10/20</td>
-		      	<td>10/11/20</td>
-		      	<td>10:00:00</td>
-		      	<td>6501 Memorial Dr.</td>
-		      	<td>Houston</td>
-		      	<td>TX</td>
-		      	<td>77007</td>
-	    	</tr>
-	    	<tr>
-			    <td>Gold Coast Art Fair</td>
-		      	<td>8/15/20</td>
-		      	<td>8/16/20</td>
-		      	<td>10:00:00</td>
-		      	<td>S Lake Shore Dr.</td>
-		      	<td>Chicago</td>
-		      	<td>IL</td>
-		      	<td>60601</td>
-	    	</tr>
-	  	</tbody>
-	</table>
 </div>
 
 

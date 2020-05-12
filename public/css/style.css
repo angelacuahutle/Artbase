@@ -10,3 +10,15 @@ li.nav-link {
 #navbar-text > .navbar-nav > li > div > a:hover {
     background-color: rgb(184, 184, 184)
 }
+
+.page-container {
+	padding: .75rem;
+}
+
+.table-column {
+	margin-top: 56px;
+}
+
+.login-card {
+	padding: 50px;
+}
