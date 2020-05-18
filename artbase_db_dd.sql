@@ -92,10 +92,10 @@ CREATE TABLE `Artworks` (
     CONSTRAINT FOREIGN KEY (`artistID`) REFERENCES Artists(`artistId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES
-    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', '', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg');
+INSERT INTO Artworks (artistID, title, medium, material, description, url, rating) VALUES
+    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg', 5),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', '', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg', 30),
+    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg', 2);
 
 
 /*Artworks_Events Table*/

@@ -42,14 +42,18 @@ WHERE ae.artworkID = :artworkID
 ORDER BY date(startDate) ASC;
 
 -- Users table queries
--- add new user
+-- Sign up new user
 INSERT INTO Users (username, password, email, birthdate) 
 VALUES (:username_input, :password_input, :email_input, :birthdate_input);
 
+-- Login as user
+SELECT * FROM Users WHERE username=:username_from_user_login_form, AND password=:password_from_user_login_form;
+
 -- Users_Events table queries
 -- associate an event to a user
-INSERT INTO Users_Events (userID, eventID)
-VALUES (:userID, :eventID);
+INSERT INTO Users_Events (userID, eventID) VALUES
+	((SELECT Users.userID FROM Users WHERE Users.username=:sessions_username),
+     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
 
 -- get all events a user is attending
 SELECT e.name, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, e.time, e.location, e.city, e.state, e.zipCode
@@ -61,5 +65,43 @@ ORDER BY date(startDate) ASC;
 -- disassociate an event from a user
 DELETE FROM Users_Events WHERE userID = :uid_from_selected_users_and_events_list AND eventID = :eid_from_selected_users_and_events_list;
 
+-- Artist table queries
+-- Sign up new artist
+INSERT INTO Artists (username, password, firstName, lastName, email, birthdate) VALUES 
+    (:username_input, :password_input, :firstName_input, :lastName_input, :email_input, :birthdate_input);
 
+-- Login as artist
+SELECT * FROM Artists WHERE username=:username_from_artist_login_form, AND password=:password_from_artist_login_form;
 
+-- Search artworks from searchbar on navbar
+SELECT * FROM Artworks
+	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
+    WHERE fn.full_name LIKE '%:search_input%'
+    OR title LIKE '%:search_input%'
+    OR medium LIKE '%:search_input%'
+    OR material LIKE '%:search_input%'
+    OR description LIKE '%:search_input%'
+    LIMIT 20;
+
+-- Discover page artwork display
+SELECT * FROM Artworks ORDER BY rating DESC LIMIT 20;
+
+-- Upload Artwork
+INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES 
+    (:session_artistID, :title_input, :madium_input, :material_input, :description_input, :url_input);
+
+-- Portfolio page of an artist
+SELECT * FROM Artworks
+    JOIN (SELECT artistID, username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
+    WHERE fn.username=:selected_artist;
+
+-- Artworks_Events table queries
+-- Assocaite artwork to event
+INSERT INTO Artworks_Events (artworkID, eventID) VALUES
+	((SELECT Artworks.artworkID FROM Artworks
+	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
+        WHERE Artists.username=:sessions_username AND Artworks.artworkID=:artwork_selected),
+     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
+
+-- Disassociate artwork from event
+DELETE FROM Artworks_Events WHERE artworkID=:selected_artwork AND eventID=:selected_event;
