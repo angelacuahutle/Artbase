@@ -95,6 +95,11 @@ SELECT * FROM Artworks ORDER BY rating DESC LIMIT 20;
 -- Upload Artwork
 INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES 
     (:session_artistID, :title_input, :madium_input, :material_input, :description_input, :url_input);
+INSERT INTO Artworks_Events (artworkID, eventID) VALUES
+	((SELECT Artworks.artworkID FROM Artworks
+	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
+        WHERE Artists.username=:sessions_username AND Artworks.url=:new_artwork_url),
+     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
 
 -- Portfolio page of an artist
 SELECT * FROM Artworks
@@ -102,12 +107,5 @@ SELECT * FROM Artworks
     WHERE fn.username=:selected_artist;
 
 -- Artworks_Events table queries
--- Assocaite artwork to event
-INSERT INTO Artworks_Events (artworkID, eventID) VALUES
-	((SELECT Artworks.artworkID FROM Artworks
-	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
-        WHERE Artists.username=:sessions_username AND Artworks.artworkID=:artwork_selected),
-     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
-
 -- Disassociate artwork from event
 DELETE FROM Artworks_Events WHERE artworkID=:selected_artwork AND eventID=:selected_event;
