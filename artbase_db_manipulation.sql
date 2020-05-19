@@ -73,6 +73,7 @@ INSERT INTO Artists (username, password, firstName, lastName, email, birthdate) 
 -- Login as artist
 SELECT * FROM Artists WHERE username=:username_from_artist_login_form, AND password=:password_from_artist_login_form;
 
+-- Artworks table queries
 -- Search artworks from searchbar on navbar
 SELECT * FROM Artworks
 	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
@@ -82,6 +83,11 @@ SELECT * FROM Artworks
     OR material LIKE '%:search_input%'
     OR description LIKE '%:search_input%'
     LIMIT 20;
+
+-- Artwork rating update
+UPDATE Artworks
+SET rating=:updated_rating_value
+WHERE artworkID=:selected_artwork;
 
 -- Discover page artwork display
 SELECT * FROM Artworks ORDER BY rating DESC LIMIT 20;
