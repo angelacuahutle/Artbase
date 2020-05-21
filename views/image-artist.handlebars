@@ -72,7 +72,9 @@
                         <label for="eventsSelect" class="col-sm-2 col-form-label">Select an event:</label>
                         <div class="col-sm-10">
                           <select class="form-control" id="eventsSelect" required>
-                            <option value="">Dropdown will list all events</option>
+                            {{#each Events}}
+                            <option value="{{eventID}}">{{name}}</option>
+                            {{/each}}
                           </select>
                         </div>
                       </div>

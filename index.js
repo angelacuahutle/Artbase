@@ -1,8 +1,8 @@
 var express = require('express');
 var fs = require('fs');
-/* Don't need db at the moment
+
 var mysql = require('./dbcon.js');
-*/
+
 var app = express();
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars');
@@ -16,6 +16,7 @@ app.engine('handlebars', handlebars({extname: 'handlebars',
                                     layoutsDir: path.join(__dirname, 'views/layouts'), 
                                     partialsDir: [path.join(__dirname, 'views/partials')]}));
 app.set('view engine', 'handlebars');
+app.set('mysql', mysql);
 app.set('port', 7791);
 
 app.get('/',function(req,res,next){
@@ -26,9 +27,23 @@ app.get('/',function(req,res,next){
 });
 
 app.get('/upload', function(req,res,next) {
+  var callbackCount = 0;
   var context = {};
   context.type = "artist/user";
-  res.render('upload-artwork', context);
+  mysql.pool.query("SELECT name FROM Events ORDER BY name ASC", function(error, results, fields){
+    if(error){
+      res.write(JSON.stringify(error));
+      res.end();
+    }   
+    context.Events = results;
+    complete();
+  })
+  function complete(){
+    callbackCount++;
+    if(callbackCount >= 1){
+      res.render('upload-artwork', context);
+    }
+  }
 });
 /*
 Inactive for step 3 draft
@@ -86,17 +101,9 @@ app.get('/search',function(req,res,next){
   res.render('search', context);
 });
 
-app.get('/events', function(req,res){
-  var context = {};
-  context.type = "artist";
-  res.render('events', context);
-});
+app.use('/events', require('./events.js'));
 
-app.get('/image-artist', function(req,res){
-  var context = {};
-  context.type = "artist";
-  res.render('image-artist', context);
-});
+app.use('/image-artist', require('./image-artist.js'));
 
 app.get('/image-user', function(req,res){
   var context = {};
