@@ -9,7 +9,9 @@ var handlebars = require('express-handlebars');
 var artworkData = require('./fakedb.json'); // Temporary fake database for testing
 var path = require('path');
 //Sets default directory
+app.use('/static', express.static('public'));
 app.use(express.static(__dirname + '/public'));
+
 app.use(bodyParser.json());
 app.engine('handlebars', handlebars({extname: 'handlebars', 
                                     defaultLayout: 'main', 

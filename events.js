@@ -40,6 +40,7 @@ module.exports = function(){
         var context = {};
         var eventName = req.query.name_search_string;
         var mysql = req.app.get('mysql');
+        console.log("AT request for events");
         if (eventName == undefined || eventName == "") {
             getEvents(res, mysql, context, complete);
         } else {
@@ -66,6 +67,8 @@ module.exports = function(){
         callbackCount = 0;
         var context = {};
         context.jsscripts = ["updateEvent.js"];
+        console.log("AT JSSCRIPTS");
+        console.log(context.jsscripts);
         var mysql = req.app.get('mysql');
         getOneEvent(res, mysql, context, req.params.id, complete);
         function complete(){
@@ -99,6 +102,7 @@ module.exports = function(){
 
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
+        console.log("INSERTING UPDATE");
         console.log(req.body)
         console.log(req.params.id)
         var sql = "UPDATE Events SET name=?, startDate=?, endDate=?, time=?, location=?, city=?, state=?, zipCode=? WHERE eventID=?";
