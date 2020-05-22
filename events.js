@@ -1,6 +1,8 @@
 module.exports = function(){
     var express = require('express');
     var router = express.Router();
+    var bodyParser = require('body-parser');
+    var urlencodedParser = bodyParser.urlencoded({extended: false});
 
     /* Query for getting all events */
 
@@ -63,12 +65,10 @@ module.exports = function(){
 
     /* Render update page with record to update */
 
-    router.get('/:id', function(req, res){
+    router.get('/:id', urlencodedParser, function(req, res){
         callbackCount = 0;
         var context = {};
         context.jsscripts = ["updateEvent.js"];
-        console.log("AT JSSCRIPTS");
-        console.log(context.jsscripts);
         var mysql = req.app.get('mysql');
         getOneEvent(res, mysql, context, req.params.id, complete);
         function complete(){
@@ -100,9 +100,9 @@ module.exports = function(){
 
     /* The URI that update data is sent to in order to update an event */
 
-    router.put('/:id', function(req, res){
+    router.put('/:id', urlencodedParser, function(req, res){
         var mysql = req.app.get('mysql');
-        console.log("INSERTING UPDATE");
+        console.log("INSERTING UPDATE")
         console.log(req.body)
         console.log(req.params.id)
         var sql = "UPDATE Events SET name=?, startDate=?, endDate=?, time=?, location=?, city=?, state=?, zipCode=? WHERE eventID=?";
