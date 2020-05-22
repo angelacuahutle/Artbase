@@ -65,7 +65,7 @@ module.exports = function(){
 
     /* Render update page with record to update */
 
-    router.get('/:id', urlencodedParser, function(req, res){
+    router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
         context.jsscripts = ["updateEvent.js"];
