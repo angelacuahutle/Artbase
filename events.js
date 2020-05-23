@@ -82,10 +82,11 @@ module.exports = function(){
 
     /* Add a new event, redirects to the events page after adding */
 
-    router.post('/', function(req, res){
+    router.post('/', urlencodedParser, function(req, res){
         console.log(req.body)
+        console.log("INSERTING NEW EVENT")
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO Events (name, startDate, endDate, time, location, city, state, zipCode) VALUES (?,?,?,?,?,?,?,?)";
+        var sql = 'INSERT INTO Events (name, startDate, endDate, time, location, city, state, zipCode) VALUES (?,?,?,?,?,?,?,?)';
         var inserts = [req.body.name, req.body.startDate, req.body.endDate, req.body.time, req.body.location, req.body.city, req.body.state, req.body.zipCode];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
