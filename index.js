@@ -12,9 +12,10 @@ var path = require('path');
 app.use('/static', express.static('public/js'));
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitializd: true
+  secret: 'secret', 
+  resave: false,
+  saveUninitialized: false,
+  maxAge: Date.now() + (30 * 86400 * 1000)
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -36,14 +37,39 @@ app.get('/', function(req,res) {
 app.get('/home',function(req,res,){
   if (req.session.loggedin) {
     var context = {}; 
+    if (req.session.isUser) {
+      context.sessInfo = req.session.userInfo;
+      
+    } else {
+      context.sessInfo = req.session.artistInfo;
+    }
+    context.isUser = req.session.isUser;
     context.artworkData = artworkData;
-    context.userInfo = req.session.userInfo;
     res.render('home', context);
   } else {
-    // could create handlebars page for failed authentication 
-    // instead of code below and render it
-    res.write('<h1>Please login First.</h1>');
-    res.end('<a href=' + '/' + '>Login</a>');
+    // Case for if not logged in
+    res.redirect('/');
+  }
+});
+
+app.post('/autha', function(req,res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username && password) {
+    mysql.pool.query('SELECT * FROM Artists WHERE username=? AND password=?', [username, password], function(error,results,fields) {
+      if (error) {
+        res.send('Incorrect username and/or password');
+      } else {
+        req.session.loggedin = true;
+        req.session.isUser = false;
+        req.session.artistInfo = results[0];
+        res.redirect('/home');
+      }
+      res.end();
+    });
+  } else {
+    res.send('Please enter username and password');
+    res.end();
   }
 });
 
@@ -51,18 +77,19 @@ app.post('/authu', function(req,res) {
   var username = req.body.username;
   var password = req.body.password;
   if (username && password) {
-    mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error, results, fields) {
+    mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error,results,fields) {
       if (error) {
         res.send('Incorrect username and/or password');
       } else {
         req.session.loggedin = true;
+        req.session.isUser = true;
         req.session.userInfo = results[0];
         res.redirect('/home');
       }
       res.end();
     });
   } else {
-    res.send('Please enter username and password')
+    res.send('Please enter username and password');
     res.end();
   }
 });
