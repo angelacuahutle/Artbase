@@ -45,6 +45,10 @@ app.get('/home',function(req,res,){
     }
     context.isUser = req.session.isUser;
     context.artworkData = artworkData;
+    console.log("Session Account Info:");
+    console.log(context.sessInfo);
+    console.log("User status (True for User False for Artist):");
+    console.log(context.isUser);
     res.render('home', context);
   } else {
     // Case for if not logged in
