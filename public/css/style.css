@@ -1,6 +1,10 @@
 img.artwork-image {
     height:auto;
-    max-width: 50%;
+    max-width: 100%;
+}
+
+.image {
+	width: 100%;
 }
 
 li.nav-link {

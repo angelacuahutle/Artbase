@@ -1,16 +1,19 @@
 <div class="artwork-container">
-  <div class="row">
-    <div class="col">
-      <div class="card">
-			  <img style="width: 100%;" src="{{url}}" class="img-fluid card-img" atl="Card image cap">
+  	<div class="row">
+    	<div class="col">
+      		<div class="card">
+				<img style="width: 100%;" src="{{url}}" class="img-fluid card-img" atl="Card image cap">
+				<!--<div class="card-img-overlay">
+					<a href="/image-artist/{{artworks.artworkID}}" class="stretched-link">
+				</div>-->
 				<div class="card-body">
-					<h5 class="card-title">{{title}}</h5>
-					<p class="card-text">{{artistName}}</p>
+  					<h5 class="card-title">{{title}}</h5>
+  					<p class="card-text">{{artistName}}</p>
 				</div>
 			</div>
-			<div class="card-footer">
-        	<a class="card-link" href="/image-artist/{{artworkID}}" id="image-artist">View or add events</a>
-      </div>
+			<div class="card-footer"><a class="card-link" href="/image-artist/{{id}}">View or add events</a>
+        	</div>
+      	</div>
     </div>
-  </div>
 </div>
+
