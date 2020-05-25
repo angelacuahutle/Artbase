@@ -1,58 +1,20 @@
 <div class="container-fluid page-container">
   <div class="row justify-content-center page-row">
     <div class="col-md-8"></br>
-      <h1>Artist Name</h1></br>
-      <div class="row row-cols-1 row-cols-md-2">
-        <div class="col mb-4">
-          <div class="card">
-            <img src="https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Teal</h5>
-              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link" onClick="location.href = '/image-artist';">View or add events</button></small>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-4">
-          <div class="card">
-            <img src="https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">RBG</h5>
-              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-4">
-          <div class="card">
-            <img src="https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Splash</h5>
-              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><button id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-4">
-          <div class="card">
-            <img src="https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Liquify</h5>
-              <p class="card-text">Photo by Amber Lamoreaux from Pexels</p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><button  id="image-artist" type="button" class="btn btn-link">View or add events</button></small>
-            </div>
+      <h1>{{artist.artistName}}</h1></br>
+
+      <div class="container-fluid page-container">
+        <div class="row row-cols-1 row-cols-md-2">
+          
+            {{#each artworks}}
+            <div class="col mb-4">
+              {{> image-portfolio}}
+            </div> 
+            {{/each}}
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
-
