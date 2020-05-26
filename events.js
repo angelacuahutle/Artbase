@@ -43,6 +43,7 @@ module.exports = function(){
         var eventName = req.query.name_search_string;
         var mysql = req.app.get('mysql');
         console.log("AT request for events");
+        console.log(req.session.sessInfo);
         if (eventName == undefined || eventName == "") {
             getEvents(res, mysql, context, complete);
         } else {

@@ -12,12 +12,14 @@ module.exports = function(){
                 res.end();
             }
             context.artist = results[0];
+            console.log("ARTIST BELOW")
+            console.log(context.artist)
             complete();
         });
     }
 
 
-    function getArtistArtworks(res, mysql, context,id, complete) {
+    function getArtistArtworks(res, mysql, context, id, complete) {
         var sql = "SELECT artworkID as id, Artworks.artistID, title, url, CONCAT(firstName, ' ', lastName) AS artistName"
         + " FROM Artworks" 
         + " LEFT JOIN Artists on Artists.artistID = Artworks.artistID"
@@ -36,7 +38,6 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
-        context.jsscripts = [];
         var mysql = req.app.get('mysql');
         getArtist(res, mysql, context, req.params.id, complete);
         getArtistArtworks(res, mysql, context, req.params.id, complete);

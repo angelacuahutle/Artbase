@@ -37,7 +37,7 @@ SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.ti
 FROM Artworks_Events ae
 LEFT JOIN Events e on e.eventID = ae.eventID
 LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID
-LEFT JOIN Artists a on a.artistID = aw.artistID)
+LEFT JOIN Artists a on a.artistID = aw.artistID
 WHERE ae.artworkID = :artworkID
 ORDER BY date(startDate) ASC;
 

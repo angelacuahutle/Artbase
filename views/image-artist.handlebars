@@ -1,15 +1,15 @@
 <div class="container-fluid page-container">
   <div class="row justify-content-center page-row">
     <div class="col-md-3"></br>
-      <h2>"{{artworks.title}}"</h2></br>
+      <h2>"{{thisArtworkAndArtist.title}}"</h2></br>
         <div class="card mb-2 shadow-sm p-3 mb-5 bg-white rounded">
-          <img src="{{artworks.url}}" class="card-img-top" alt="...">
+          <img src="{{thisArtworkAndArtist.url}}" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">{{artworks.title}}</h5>
-            <p>By <a class="card-text" href="/artist-portfolio/{{artworks.artistID}}">{{artworks.artistName}}</a></p>
-            <p class="card-text">Medium: {{artworks.medium}}</p>
-            <p class="card-text">Materials: {{artworks.material}}</p>
-            <p class="card-text">Description: {{artworks.description}}</p>
+            <h5 class="card-title">{{thisArtworkAndArtist.title}}</h5>
+            <p>By <a class="card-text" href="/artist-portfolio/{{thisArtworkAndArtist.artistID}}">{{thisArtworkAndArtist.artistName}}</a></p>
+            <p class="card-text">Medium: {{thisArtworkAndArtist.medium}}</p>
+            <p class="card-text">Materials: {{thisArtworkAndArtist.material}}</p>
+            <p class="card-text">Description: {{thisArtworkAndArtist.description}}</p>
           </div>
         </div>
       </div>
@@ -33,18 +33,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {{#each artworksEvents}}
-                      <tr>
-                          <td><button type="button" class="btn btn-primary">Remove</button></td>
-                          <td>{{name}}</td>
-                          <td>{{startDate}}</td>
-                          <td>{{endDate}}</td>
-                          <td>{{time}}</td>
-                          <td>{{location}}</td>
-                          <td>{{city}}</td>
-                          <td>{{state}}</td>
-                          <td>{{zipCode}}</td>
-                      </tr>
+                      {{#each thisEvents}}
+                        <tr>
+                            <td><button type="button" class="btn btn-primary">Remove</button></td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.startDate}}</td>
+                            <td>{{this.endDate}}</td>
+                            <td>{{this.time}}</td>
+                            <td>{{this.location}}</td>
+                            <td>{{this.city}}</td>
+                            <td>{{this.state}}</td>
+                            <td>{{this.zipCode}}</td>
+                        </tr>
                       {{/each}}
                     </tbody>
               </table>
@@ -65,7 +65,7 @@
                       <div class="form-group row">
                         <label for="eventsSelect" class="col-sm-2 col-form-label">Select an event:</label>
                         <div class="col-sm-10">
-                          <select class="form-control" id="eventsSelect" name="eventID" required>
+                          <select class="form-control" id="eventsSelect" required>
                             {{#each Events}}
                             <option value="{{eventID}}">{{name}}</option>
                             {{/each}}
@@ -81,7 +81,7 @@
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
-                          <input type="submit" class="btn btn-primary" value="Add artworkEvent">
+                          <button id="add" type="submit" class="btn btn-primary">Add</button>
                         </div>
                       </div>
                     </form>
