@@ -43,20 +43,8 @@ app.get('/home',function(req,res,){
     function complete(){
       callbackCount++;
       if(callbackCount >= 1){
-        if (req.session.isUser) {
-          context.sessInfo = req.session.userInfo;
-          req.session.sessInfo = req.session.userInfo;
-        } else {
-          context.sessInfo = req.session.artistInfo;
-          req.session.sessInfo = req.session.artistInfo;
-        }
-        console.log("ALL ARTWORKS")
-        console.log(context.artworks);
-        context.isUser = req.session.isUser;
-        console.log("Session Account Info:");
-        console.log(context.sessInfo);
-        console.log("User status (True for User False for Artist):");
-        console.log(req.session.sessInfo);
+        context.session = req.session;
+        console.log(context.session)
         res.render('home', context);
       }
     } 
@@ -64,6 +52,18 @@ app.get('/home',function(req,res,){
     // Case for if not logged in
     res.redirect('/');
   }
+});
+
+app.get('/test', function(req, res) {
+  // test page that outputs available session info
+  var context = {};
+  context.loggedin = req.session.loggedin;
+  context.isUser = req.session.isUser;
+  // sessInfo contains important info like the userID/artistID, username, etc.
+  context.sessInfo = req.session.sessInfo;
+  console.log("req.session:")
+  console.log(req.session);
+  res.render('test', context);
 });
 
 app.get('/upload', function(req,res,next) {
@@ -92,14 +92,19 @@ app.post('/autha', function(req,res) {
   if (username && password) {
     mysql.pool.query('SELECT * FROM Artists WHERE username=? AND password=?', [username, password], function(error,results,fields) {
       if (error) {
-        res.send('Incorrect username and/or password');
+        console.log(JSON.stringify(error))
+        res.write(JSON.stringify(error));
+        res.end();
+      } else if (!results[0]) {
+        // password or username was wrong
+        res.redirect('/artist-login');
       } else {
         req.session.loggedin = true;
-        req.session.isUser = false;
-        req.session.artistInfo = results[0];
+        req.session.isUser = true;
+        req.session.sessInfo = results[0];
+        req.session.save();
         res.redirect('/home');
       }
-      res.end();
     });
   } else {
     res.send('Please enter username and password');
@@ -113,11 +118,17 @@ app.post('/authu', function(req,res) {
   if (username && password) {
     mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error,results,fields) {
       if (error) {
-        res.send('Incorrect username and/or password');
+        console.log(JSON.stringify(error))
+        res.write(JSON.stringify(error));
+        res.end();
+      } else if (!results[0]) {
+        // password or username was wrong
+        res.redirect('/user-login');
       } else {
         req.session.loggedin = true;
         req.session.isUser = true;
-        req.session.userInfo = results[0];
+        req.session.sessInfo = results[0];
+        req.session.save();
         res.redirect('/home');
       }
       res.end();
