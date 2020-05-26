@@ -11,8 +11,6 @@ module.exports = function(){
                 res.end();
             }
             context.Events = results; 
-            console.log("LOGGING ALL EVENTS")
-            console.log(context.Events)
             complete();
         });
     }
@@ -31,7 +29,7 @@ module.exports = function(){
     }
 
     function getThisArtworkAndArtist(res, mysql, context, id, complete) {
-        var sql = "SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks_Events ae LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE ae.artworkID = ?";
+        var sql = "SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks_Events ae LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE ae.artworkID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields) {
             if (error) {
@@ -48,7 +46,6 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         var callbackCount = 0;
         var context = {};
-        console.log(context);
         var mysql = req.app.get('mysql');
         getEvents(res, mysql, context, complete);
         getThisEvents(res, mysql, context, req.params.id, complete);
@@ -56,21 +53,17 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 3){
-                console.log(context);
                 res.render('image-artist', context);
             }
-
         }
     });
 
     router.post('/:id', urlencodedParser, function(req, res) {
-        console.log("LOGGING req.body")
-        console.log(req.body)
         var mysql = req.app.get('mysql');
-        // let's get out the certificates from the array that was submitted by the form 
         var artworkURL = req.body.artworkURL;
         var artistUsername = req.body.artistUsername;
         var newEventInsert = req.body.eventSelected;
+        var artworkID = req.body.artworkID;
         var sql = "INSERT INTO Artworks_Events (artworkID, eventID) VALUES ((SELECT Artworks.artworkID FROM Artworks LEFT JOIN Artists ON Artworks.artistID=Artists.artistID WHERE Artists.username=? AND Artworks.url=?), (SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
         var inserts = [artistUsername, artworkURL, newEventInsert];
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
@@ -79,7 +72,7 @@ module.exports = function(){
                 res.write(JSON.stringify(error));
                 res.end();
             } else {
-                res.redirect('/home');
+                res.redirect('/image-artist/' + artworkID);
             }
         });
     });

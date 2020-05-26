@@ -100,7 +100,7 @@ app.post('/autha', function(req,res) {
         res.redirect('/artist-login');
       } else {
         req.session.loggedin = true;
-        req.session.isUser = true;
+        req.session.isUser = false;
         req.session.sessInfo = results[0];
         req.session.save();
         res.redirect('/home');
