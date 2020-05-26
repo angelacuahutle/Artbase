@@ -16,7 +16,7 @@ module.exports = function(){
     }
 
     function getThisEvents(res, mysql, context, id, complete) {
-        var sql="SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, e.time, e.location, e.city, e.state, e.zipCode FROM Artworks_Events ae LEFT JOIN Events e on e.eventID = ae.eventID LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE ae.artworkID = ? ORDER BY date(startDate) ASC;";
+        var sql="SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, e.time, e.location, e.city, e.state, e.zipCode FROM Artworks_Events ae LEFT JOIN Events e on e.eventID = ae.eventID LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE aw.artworkID = ? ORDER BY date(startDate) ASC;";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields) {
             if (error) {
@@ -29,7 +29,7 @@ module.exports = function(){
     }
 
     function getThisArtworkAndArtist(res, mysql, context, id, complete) {
-        var sql = "SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks_Events ae LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE ae.artworkID = ?";
+        var sql = "SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks aw LEFT JOIN Artists a on a.artistID = aw.artistID WHERE aw.artworkID = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields) {
             if (error) {

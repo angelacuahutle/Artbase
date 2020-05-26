@@ -84,6 +84,12 @@ SELECT * FROM Artworks
     OR description LIKE '%:search_input%'
     LIMIT 20;
 
+-- get the artwork and artist for the image-artist page
+SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks_Events ae 
+    LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID 
+    LEFT JOIN Artists a on a.artistID = aw.artistID 
+    WHERE ae.artworkID = :route_id
+
 -- Artwork rating update
 UPDATE Artworks
 SET rating=:updated_rating_value
