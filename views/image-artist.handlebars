@@ -61,17 +61,19 @@
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
-                    <form>
+                    <form id="add_artwork_events" action="/image-artist/:{{thisArtworkAndArtist.artistID}}" method="POST" enctype="application/x-www-form-urlencoded">
                       <div class="form-group row">
                         <label for="eventsSelect" class="col-sm-2 col-form-label">Select an event:</label>
                         <div class="col-sm-10">
-                          <select class="form-control" id="eventsSelect" required>
+                          <select class="form-control" id="eventsSelect" name="eventSelected" required>
                             {{#each Events}}
                             <option value="{{eventID}}">{{name}}</option>
                             {{/each}}
                           </select>
                         </div>
                       </div>
+                    <input id="artwork-event-artistUsername" name="artistUsername" type="hidden" value="{{thisArtworkAndArtist.username}}">
+                    <input id="artwork-event-artworkURL" name="artworkURL" type="hidden" value="{{thisArtworkAndArtist.url}}">
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
@@ -81,7 +83,7 @@
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
-                          <button id="add" type="submit" class="btn btn-primary">Add</button>
+                          <input id="insert_artwork_event" type="submit" value="Submit" class="btn btn-primary">
                         </div>
                       </div>
                     </form>
