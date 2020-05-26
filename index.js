@@ -125,21 +125,13 @@ app.get('/search',function(req,res,next){
 
 app.use('/events', require('./events.js'));
 
-app.use('/image-artist', require('./image-artist.js'));
-
-app.get('/image-user', function(req,res){
-  var context = {};
-  context.type = "user";
-  res.render('image-user', context);
-});
-
 app.use('/artist-portfolio', require('./artist-portfolio.js'));
 
-app.get('/user-events', function(req,res){
-  var context = {};
-  context.type = "user";
-  res.render('user-events', context);
-});
+app.use('/image-artist', require('./image-artist.js'));
+
+app.use('/image-user', require('./image-user.js'));
+
+app.use('/user-events', require('./user-events.js'));
 
 app.use(function(req,res){
   res.status(404);
