@@ -2,16 +2,21 @@ var express = require('express');
 var fs = require('fs');
 var mysql = require('./dbcon.js');
 var app = express();
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars');
-var artworkData = require('./fakedb.json'); // Temporary fake database for testing
 var path = require('path');
 
-
-//Sets default directory
 app.use('/static', express.static('public/js'));
 app.use(express.static(__dirname + '/public'));
-
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: false,
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  resave: false
+}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.engine('handlebars', handlebars({extname: 'handlebars', 
@@ -19,32 +24,45 @@ app.engine('handlebars', handlebars({extname: 'handlebars',
                                     layoutsDir: path.join(__dirname, 'views/layouts'), 
                                     partialsDir: [path.join(__dirname, 'views/partials')]}));
 app.set('view engine', 'handlebars');
-
 app.set('mysql', mysql);
 app.set('port', 7791);
 
-function getArtworks(res, mysql, context, complete){
-    mysql.pool.query("SELECT artworkID, title, url, Artworks.artistID, CONCAT(firstName, ' ', lastName) AS artistName FROM Artworks JOIN Artists ON Artists.artistID = Artworks.artistID", function(error, results, fields){
-        if(error){
-            res.write(JSON.stringify(error));
-            res.end();
-        }
-        context.artworks = results;
-        complete();
-    });
-}
+app.get('/', function(req,res) {
+  if(req.session.loggedin) {
+    res.render('home');
+  }
+  res.render('login');
+})
 
-app.get('/',function(req,res,next){
-  var context = {}; 
-  var callbackCount = 0;
-  var context = {};
-  var mysql = req.app.get('mysql');
-  getArtworks(res, mysql, context, complete);
-  function complete(){
+app.get('/home',function(req,res,){
+  if (req.session.loggedin) {
+    var context = {}; 
+    var callbackCount = 0;
+    var mysql = req.app.get('mysql');
+    getArtworks(res, mysql, context, complete);
+    function complete(){
       callbackCount++;
       if(callbackCount >= 1){
-          res.render('home', context);
+        if (req.session.isUser) {
+          context.sessInfo = req.session.userInfo;
+          req.session.sessInfo = req.session.userInfo;
+        } else {
+          context.sessInfo = req.session.artistInfo;
+          req.session.sessInfo = req.session.artistInfo;
+        }
+        console.log("ALL ARTWORKS")
+        console.log(context.artworks);
+        context.isUser = req.session.isUser;
+        console.log("Session Account Info:");
+        console.log(context.sessInfo);
+        console.log("User status (True for User False for Artist):");
+        console.log(req.session.sessInfo);
+        res.render('home', context);
       }
+    } 
+  } else {
+    // Case for if not logged in
+    res.redirect('/');
   }
 });
 
@@ -67,36 +85,49 @@ app.get('/upload', function(req,res,next) {
     }
   }
 });
-/*
-Inactive for step 3 draft
-app.post('/upload', function(req,res,next) {
-  //pushes entered parameters to fakedb
-  artworkData.push(
-    {
-      title: req.body.title,
-      medium: req.body.medium,
-      materials: req.body.materials,
-      description: req.body.description,
-      rating: 0,
-      url: req.body.url
-    }
-  );
-  fs.writeFile(__dirname + '/fakedb.json', JSON.stringify(artworkData, 2, 2),
-    function(err) {
-      if(!err) {
-        res.status(200).send();
+
+app.post('/autha', function(req,res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username && password) {
+    mysql.pool.query('SELECT * FROM Artists WHERE username=? AND password=?', [username, password], function(error,results,fields) {
+      if (error) {
+        res.send('Incorrect username and/or password');
+      } else {
+        req.session.loggedin = true;
+        req.session.isUser = false;
+        req.session.artistInfo = results[0];
+        res.redirect('/home');
       }
-      else {
-        res.status(500).send("Couldn't write to fakedb");
-      }
-    }
-  );
+      res.end();
+    });
+  } else {
+    res.send('Please enter username and password');
+    res.end();
+  }
 });
 
-app.get('/upload2', function(req,res,next) {
-  res.render('upload');
-})
-*/
+app.post('/authu', function(req,res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username && password) {
+    mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error,results,fields) {
+      if (error) {
+        res.send('Incorrect username and/or password');
+      } else {
+        req.session.loggedin = true;
+        req.session.isUser = true;
+        req.session.userInfo = results[0];
+        res.redirect('/home');
+      }
+      res.end();
+    });
+  } else {
+    res.send('Please enter username and password');
+    res.end();
+  }
+});
+
 app.get('/user-signup',function(req,res,next){
   var context = {};
   res.render('user-signup', context);
@@ -155,3 +186,14 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.')
 });
+
+function getArtworks(res, mysql, context, complete){
+  mysql.pool.query("SELECT artworkID, title, url, Artworks.artistID, CONCAT(firstName, ' ', lastName) AS artistName FROM Artworks JOIN Artists ON Artists.artistID = Artworks.artistID", function(error, results, fields){
+      if(error){
+          res.write(JSON.stringify(error));
+          res.end();
+      }
+      context.artworks = results;
+      complete();
+  });
+}
