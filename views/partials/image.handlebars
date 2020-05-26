@@ -1,12 +1,13 @@
-
 <div class="artwork-container">
-    <img class="artwork-image" src="{{url}}"></div>
-    <div class="artwork-text-content">
-        <div><a class="artwork-title">Title: {{title}}</a></div>
-        <div class="artwork-medium">Medium: {{medium}}</div>
-        <div class="artwork-mateiral">Materials: {{materials}}</div>
-        <div class="artwork-description">Description: {{description}}</div>
-        <div class="artwork-rating">Rating: {{rating}}</div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <a href='/image-artist/{{artworkID}}'><img class="artwork-image" src="{{url}}"></a>
+            </div>
+            <div class="artwork-text-content">
+                <div><a class="artwork-title">{{title}}</a></div>
+                <div><a class="artwork-artist" href="/artist-portfolio/{{artistID}}">{{artistName}}</a></div>
+            </div>
+        </div>
     </div>
 </div>
-

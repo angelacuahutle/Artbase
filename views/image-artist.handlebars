@@ -1,12 +1,15 @@
 <div class="container-fluid page-container">
   <div class="row justify-content-center page-row">
     <div class="col-md-3"></br>
-      <h1>Artist Name</h1></br>
+      <h2>"{{thisArtworkAndArtist.title}}"</h2></br>
         <div class="card mb-2 shadow-sm p-3 mb-5 bg-white rounded">
-          <img src="https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg" class="card-img-top" alt="...">
+          <img src="{{thisArtworkAndArtist.url}}" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title">Teal</h5>
-            <p class="card-text">Photo by<button id="portfolio" type="button" class="btn btn-link" onClick="reply_click(this.id)">Amber Lamoreaux</button>from Pexels</p>
+            <h5 class="card-title">{{thisArtworkAndArtist.title}}</h5>
+            <p>By <a class="card-text" href="/artist-portfolio/{{thisArtworkAndArtist.artistID}}">{{thisArtworkAndArtist.artistName}}</a></p>
+            <p class="card-text">Medium: {{thisArtworkAndArtist.medium}}</p>
+            <p class="card-text">Materials: {{thisArtworkAndArtist.material}}</p>
+            <p class="card-text">Description: {{thisArtworkAndArtist.description}}</p>
           </div>
         </div>
       </div>
@@ -30,28 +33,19 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                          <td><button type="button" class="btn btn-primary">Remove</button></td>
-                          <td>Plaza Art Fair</td>
-                          <td>9/25/20</td>
-                          <td>9/27/20</td>
-                          <td>10:00:00</td>
-                          <td>Country Club Plaza</td>
-                          <td>Kansas City</td>
-                          <td>MO</td>
-                          <td>64112</td>
-                      </tr>
-                      <tr>
-                          <td><button type="button" class="btn btn-primary">Remove</button></td>
-                          <td>Bayou City Art Festival</td>
-                          <td>10/10/20</td>
-                          <td>10/11/20</td>
-                          <td>10:00:00</td>
-                          <td>6501 Memorial Dr.</td>
-                          <td>Houston</td>
-                          <td>TX</td>
-                          <td>77007</td>
-                      </tr>
+                      {{#each thisEvents}}
+                        <tr>
+                            <td><button type="button" class="btn btn-primary">Remove</button></td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.startDate}}</td>
+                            <td>{{this.endDate}}</td>
+                            <td>{{this.time}}</td>
+                            <td>{{this.location}}</td>
+                            <td>{{this.city}}</td>
+                            <td>{{this.state}}</td>
+                            <td>{{this.zipCode}}</td>
+                        </tr>
+                      {{/each}}
                     </tbody>
               </table>
             </div>
@@ -67,17 +61,19 @@
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
-                    <form>
+                    <form id="add_artwork_events" action="/image-artist/:{{thisArtworkAndArtist.artistID}}" method="POST" enctype="application/x-www-form-urlencoded">
                       <div class="form-group row">
                         <label for="eventsSelect" class="col-sm-2 col-form-label">Select an event:</label>
                         <div class="col-sm-10">
-                          <select class="form-control" id="eventsSelect" required>
+                          <select class="form-control" id="eventsSelect" name="eventSelected" required>
                             {{#each Events}}
                             <option value="{{eventID}}">{{name}}</option>
                             {{/each}}
                           </select>
                         </div>
                       </div>
+                    <input id="artwork-event-artistUsername" name="artistUsername" type="hidden" value="{{thisArtworkAndArtist.username}}">
+                    <input id="artwork-event-artworkURL" name="artworkURL" type="hidden" value="{{thisArtworkAndArtist.url}}">
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
@@ -87,7 +83,7 @@
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
-                          <button id="add" type="submit" class="btn btn-primary">Add</button>
+                          <input id="insert_artwork_event" type="submit" value="Submit" class="btn btn-primary">
                         </div>
                       </div>
                     </form>

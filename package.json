@@ -15,6 +15,7 @@
     "body-parser": "^1.13.3",
     "express": "^4.13.2",
     "express-handlebars": "^4.0.4",
+    "express-mysql-session": "^2.1.4",
     "express-session": "^1.11.3",
     "fs": "0.0.1-security",
     "mysql": "^2.8.0"

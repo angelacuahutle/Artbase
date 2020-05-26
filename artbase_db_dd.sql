@@ -119,6 +119,12 @@ INSERT INTO Artworks_Events (artworkID, eventID) VALUES
     (
         (SELECT Artworks.artworkID FROM Artworks
 	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
+        WHERE Artists.username = 'W W'),
+        (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')
+    ),
+    (
+        (SELECT Artworks.artworkID FROM Artworks
+	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
         WHERE Artists.username = 'SteveJ45'),
         (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')
     ),

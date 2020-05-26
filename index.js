@@ -5,20 +5,20 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars');
-var artworkData = require('./fakedb.json'); // Temporary fake database for testing
 var path = require('path');
-
 
 app.use('/static', express.static('public/js'));
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-  secret: 'secret', 
-  resave: false,
+  secret: 'secret',
   saveUninitialized: false,
-  maxAge: Date.now() + (30 * 86400 * 1000)
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  resave: false
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.engine('handlebars', handlebars({extname: 'handlebars', 
                                     defaultLayout: 'main', 
                                     layoutsDir: path.join(__dirname, 'views/layouts'), 
@@ -37,70 +37,39 @@ app.get('/', function(req,res) {
 app.get('/home',function(req,res,){
   if (req.session.loggedin) {
     var context = {}; 
-    if (req.session.isUser) {
-      context.sessInfo = req.session.userInfo;
-      
-    } else {
-      context.sessInfo = req.session.artistInfo;
-    }
-    context.isUser = req.session.isUser;
-    context.artworkData = artworkData;
-    console.log("Session Account Info:");
-    console.log(context.sessInfo);
-    console.log("User status (True for User False for Artist):");
-    console.log(context.isUser);
-    res.render('home', context);
+    var callbackCount = 0;
+    var mysql = req.app.get('mysql');
+    getArtworks(res, mysql, context, complete);
+    function complete(){
+      callbackCount++;
+      if(callbackCount >= 1){
+        context.session = req.session;
+        console.log(context.session)
+        res.render('home', context);
+      }
+    } 
   } else {
     // Case for if not logged in
     res.redirect('/');
   }
 });
 
-app.post('/autha', function(req,res) {
-  var username = req.body.username;
-  var password = req.body.password;
-  if (username && password) {
-    mysql.pool.query('SELECT * FROM Artists WHERE username=? AND password=?', [username, password], function(error,results,fields) {
-      if (error) {
-        res.send('Incorrect username and/or password');
-      } else {
-        req.session.loggedin = true;
-        req.session.isUser = false;
-        req.session.artistInfo = results[0];
-        res.redirect('/home');
-      }
-      res.end();
-    });
-  } else {
-    res.send('Please enter username and password');
-    res.end();
-  }
-});
-
-app.post('/authu', function(req,res) {
-  var username = req.body.username;
-  var password = req.body.password;
-  if (username && password) {
-    mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error,results,fields) {
-      if (error) {
-        res.send('Incorrect username and/or password');
-      } else {
-        req.session.loggedin = true;
-        req.session.isUser = true;
-        req.session.userInfo = results[0];
-        res.redirect('/home');
-      }
-      res.end();
-    });
-  } else {
-    res.send('Please enter username and password');
-    res.end();
-  }
+app.get('/test', function(req, res) {
+  // test page that outputs available session info
+  var context = {};
+  context.loggedin = req.session.loggedin;
+  context.isUser = req.session.isUser;
+  // sessInfo contains important info like the userID/artistID, username, etc.
+  context.sessInfo = req.session.sessInfo;
+  console.log("req.session:")
+  console.log(req.session);
+  res.render('test', context);
 });
 
 app.get('/upload', function(req,res,next) {
   var callbackCount = 0;
   var context = {};
+  context.type = "artist/user";
   mysql.pool.query("SELECT name FROM Events ORDER BY name ASC", function(error, results, fields){
     if(error){
       res.write(JSON.stringify(error));
@@ -114,6 +83,59 @@ app.get('/upload', function(req,res,next) {
     if(callbackCount >= 1){
       res.render('upload-artwork', context);
     }
+  }
+});
+
+app.post('/autha', function(req,res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username && password) {
+    mysql.pool.query('SELECT * FROM Artists WHERE username=? AND password=?', [username, password], function(error,results,fields) {
+      if (error) {
+        console.log(JSON.stringify(error))
+        res.write(JSON.stringify(error));
+        res.end();
+      } else if (!results[0]) {
+        // password or username was wrong
+        res.redirect('/artist-login');
+      } else {
+        req.session.loggedin = true;
+        req.session.isUser = true;
+        req.session.sessInfo = results[0];
+        req.session.save();
+        res.redirect('/home');
+      }
+    });
+  } else {
+    res.send('Please enter username and password');
+    res.end();
+  }
+});
+
+app.post('/authu', function(req,res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  if (username && password) {
+    mysql.pool.query('SELECT * FROM Users WHERE username=? AND password=?', [username, password], function(error,results,fields) {
+      if (error) {
+        console.log(JSON.stringify(error))
+        res.write(JSON.stringify(error));
+        res.end();
+      } else if (!results[0]) {
+        // password or username was wrong
+        res.redirect('/user-login');
+      } else {
+        req.session.loggedin = true;
+        req.session.isUser = true;
+        req.session.sessInfo = results[0];
+        req.session.save();
+        res.redirect('/home');
+      }
+      res.end();
+    });
+  } else {
+    res.send('Please enter username and password');
+    res.end();
   }
 });
 
@@ -145,25 +167,13 @@ app.get('/search',function(req,res,next){
 
 app.use('/events', require('./events.js'));
 
+app.use('/artist-portfolio', require('./artist-portfolio.js'));
+
 app.use('/image-artist', require('./image-artist.js'));
 
-app.get('/image-user', function(req,res){
-  var context = {};
-  context.type = "user";
-  res.render('image-user', context);
-});
+app.use('/image-user', require('./image-user.js'));
 
-app.get('/artist-portfolio', function(req,res){
-  var context = {};
-  context.type = "artist/user";
-  res.render('artist-portfolio', context);
-});
-
-app.get('/user-events', function(req,res){
-  var context = {};
-  context.type = "user";
-  res.render('user-events', context);
-});
+app.use('/user-events', require('./user-events.js'));
 
 app.use(function(req,res){
   res.status(404);
@@ -180,8 +190,13 @@ app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.')
 });
 
-function setVals(results) {
-  userResults = results;
-  console.log(userResults);
-  return userResults;
+function getArtworks(res, mysql, context, complete){
+  mysql.pool.query("SELECT artworkID, title, url, Artworks.artistID, CONCAT(firstName, ' ', lastName) AS artistName FROM Artworks JOIN Artists ON Artists.artistID = Artworks.artistID", function(error, results, fields){
+      if(error){
+          res.write(JSON.stringify(error));
+          res.end();
+      }
+      context.artworks = results;
+      complete();
+  });
 }
