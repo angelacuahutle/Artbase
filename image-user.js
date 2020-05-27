@@ -56,10 +56,7 @@ module.exports = function(){
             if(callbackCount >= 2){
                 res.render('image-user', context);
             }
-
         }
     });
-
-   
     return router;
 }();

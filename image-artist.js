@@ -53,7 +53,15 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 3){
-                res.render('image-artist', context);
+                console.log("LOGGING sessInfo")
+                console.log(req.session.sessInfo)
+                console.log("LOGGING context.thisartworkAndArtist")
+                console.log(context.thisArtworkAndArtist)
+                if (req.session.sessInfo.artistID === context.thisArtworkAndArtist.artistID) {
+                    res.render('image-artist', context);
+                } else {
+                    res.redirect('/image-user/' + req.params.id);
+                }
             }
         }
     });

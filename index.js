@@ -47,7 +47,7 @@ app.get('/home',function(req,res,){
         console.log(context.session)
         res.render('home', context);
       }
-    } 
+    }
   } else {
     // Case for if not logged in
     res.redirect('/');
@@ -131,7 +131,6 @@ app.post('/authu', function(req,res) {
         req.session.save();
         res.redirect('/home');
       }
-      res.end();
     });
   } else {
     res.send('Please enter username and password');
@@ -139,35 +138,36 @@ app.post('/authu', function(req,res) {
   }
 });
 
-app.get('/user-signup',function(req,res,next){
-  var context = {};
-  res.render('user-signup', context);
-});
-
 app.get('/user-login',function(req,res,next){
-  var context = {};
-  res.render('user-login', context);
+  res.render('user-login');
 });
 
-app.get('/artist-signup',function(req,res,next){
-  var context = {};
-  res.render('artist-signup', context);
-});
+app.use('/user-signup', require('./user-signup.js'));
 
 app.get('/artist-login',function(req,res,next){
-  var context = {};
-  res.render('artist-login', context);
+  res.render('artist-login');
 });
+
+app.use('/artist-signup', require('./artist-signup.js'));
 
 app.get('/search',function(req,res,next){
   var context = {};
-  context.type = "artist/user";
   res.render('search', context);
 });
 
 app.use('/events', require('./events.js'));
 
 app.use('/artist-portfolio', require('./artist-portfolio.js'));
+
+app.get('/image-router/:id', function(req, res) {
+  if (req.session.isUser) {
+    res.redirect('/image-user/' + req.params.id);
+  } else if (!req.session.isUser) {
+    res.redirect('/image-artist/' + req.params.id);
+  } else {
+    res.redirect('/');
+  }
+})
 
 app.use('/image-artist', require('./image-artist.js'));
 
