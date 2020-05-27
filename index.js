@@ -19,6 +19,10 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(function(req, res, next) {
+  res.locals.session = req.session;
+  next();
+});
 app.engine('handlebars', handlebars({extname: 'handlebars', 
                                     defaultLayout: 'main', 
                                     layoutsDir: path.join(__dirname, 'views/layouts'), 

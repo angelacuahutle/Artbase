@@ -9,6 +9,7 @@ module.exports = function(){
     function getEvents(res, mysql, context, complete){
     	mysql.pool.query("SELECT eventID, name, DATE_FORMAT(startDate, '%a %b %e %Y') startDate, DATE_FORMAT(endDate, '%a %b %e %Y') endDate, TIME_FORMAT(time, '%h %i %p') time, location, city, state, zipCode FROM Events ORDER BY date(startDate) ASC", function(error, results, fields){
     		if(error){
+                console.log(error);
     			res.write(JSON.stringify(error));
     			res.end();
     		}
@@ -42,8 +43,6 @@ module.exports = function(){
         var context = {};
         var eventName = req.query.name_search_string;
         var mysql = req.app.get('mysql');
-        console.log("AT request for events");
-        console.log(req.session.sessInfo);
         if (eventName == undefined || eventName == "") {
             getEvents(res, mysql, context, complete);
         } else {
@@ -75,7 +74,6 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
-                console.log(context);
                 res.render('update-event', context);
             }
         }
@@ -84,8 +82,6 @@ module.exports = function(){
     /* Add a new event, redirects to the events page after adding */
 
     router.post('/', urlencodedParser, function(req, res){
-        console.log(req.body)
-        console.log("INSERTING NEW EVENT")
         var mysql = req.app.get('mysql');
         var sql = 'INSERT INTO Events (name, startDate, endDate, time, location, city, state, zipCode) VALUES (?,?,?,?,?,?,?,?)';
         var inserts = [req.body.name, req.body.startDate, req.body.endDate, req.body.time, req.body.location, req.body.city, req.body.state, req.body.zipCode];
@@ -104,9 +100,6 @@ module.exports = function(){
 
     router.put('/:id', urlencodedParser, function(req, res){
         var mysql = req.app.get('mysql');
-        console.log("INSERTING UPDATE")
-        console.log(req.body)
-        console.log(req.params.id)
         var sql = "UPDATE Events SET name=?, startDate=?, endDate=?, time=?, location=?, city=?, state=?, zipCode=? WHERE eventID=?";
         var inserts = [req.body.name, req.body.startDate, req.body.endDate, req.body.time, req.body.location, req.body.city, req.body.state, req.body.zipCode, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){

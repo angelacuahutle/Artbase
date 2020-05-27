@@ -8,9 +8,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/artist-portfolio">Portfolio</a>
             </li>
+            {{#if session.isUser}}
             <li class="nav-item">
-                <a class="nav-link" href="/user-events">User Events Page</a>
+                <a class="nav-link" href="/user-events/{{session.sessInfo.userID}}">User Events Page</a>
             </li>
+            {{/if}}
             <li class="nav-item">
                 <a class="nav-link" href="/events">Artist Events Page</a>
             </li>
