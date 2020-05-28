@@ -179,6 +179,10 @@ app.use('/image-user', require('./image-user.js'));
 
 app.use('/user-events', require('./user-events.js'));
 
+app.get('/access-denied', function(req, res) {
+  res.render('access-denied');
+})
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');

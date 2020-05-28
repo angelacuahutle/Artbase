@@ -44,45 +44,53 @@ module.exports = function(){
     /*Display all events in dropdown */
 
     router.get('/:id', function(req, res){
-        var callbackCount = 0;
-        var context = {};
-        var mysql = req.app.get('mysql');
-        getEvents(res, mysql, context, complete);
-        getThisEvents(res, mysql, context, req.params.id, complete);
-        getThisArtworkAndArtist(res, mysql, context, req.params.id, complete);
-        function complete(){
-            callbackCount++;
-            if(callbackCount >= 3){
-                console.log("LOGGING sessInfo")
-                console.log(req.session.sessInfo)
-                console.log("LOGGING context.thisartworkAndArtist")
-                console.log(context.thisArtworkAndArtist)
-                if (req.session.sessInfo.artistID === context.thisArtworkAndArtist.artistID) {
-                    res.render('image-artist', context);
-                } else {
-                    res.redirect('/image-user/' + req.params.id);
+        if (req.session.isUser == false) {
+            var callbackCount = 0;
+            var context = {};
+            var mysql = req.app.get('mysql');
+            getEvents(res, mysql, context, complete);
+            getThisEvents(res, mysql, context, req.params.id, complete);
+            getThisArtworkAndArtist(res, mysql, context, req.params.id, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 3){
+                    console.log("LOGGING sessInfo")
+                    console.log(req.session.sessInfo)
+                    console.log("LOGGING context.thisartworkAndArtist")
+                    console.log(context.thisArtworkAndArtist)
+                    if (req.session.sessInfo.artistID === context.thisArtworkAndArtist.artistID) {
+                        res.render('image-artist', context);
+                    } else {
+                        res.redirect('/image-user/' + req.params.id);
+                    }
                 }
             }
+        } else {
+            res.redirect('/image-user/' + req.params.id);
         }
     });
 
     router.post('/:id', urlencodedParser, function(req, res) {
-        var mysql = req.app.get('mysql');
-        var artworkURL = req.body.artworkURL;
-        var artistUsername = req.body.artistUsername;
-        var newEventInsert = req.body.eventSelected;
-        var artworkID = req.body.artworkID;
-        var sql = "INSERT INTO Artworks_Events (artworkID, eventID) VALUES ((SELECT Artworks.artworkID FROM Artworks LEFT JOIN Artists ON Artworks.artistID=Artists.artistID WHERE Artists.username=? AND Artworks.url=?), (SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
-        var inserts = [artistUsername, artworkURL, newEventInsert];
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                console.log(JSON.stringify(error))
-                res.write(JSON.stringify(error));
-                res.end();
-            } else {
-                res.redirect('/image-artist/' + artworkID);
-            }
-        });
+        if (req.session.isUser == false) {
+            var mysql = req.app.get('mysql');
+            var artworkURL = req.body.artworkURL;
+            var artistUsername = req.body.artistUsername;
+            var newEventInsert = req.body.eventSelected;
+            var artworkID = req.body.artworkID;
+            var sql = "INSERT INTO Artworks_Events (artworkID, eventID) VALUES ((SELECT Artworks.artworkID FROM Artworks LEFT JOIN Artists ON Artworks.artistID=Artists.artistID WHERE Artists.username=? AND Artworks.url=?), (SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
+            var inserts = [artistUsername, artworkURL, newEventInsert];
+            sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+                if(error){
+                    console.log(JSON.stringify(error))
+                    res.write(JSON.stringify(error));
+                    res.end();
+                } else {
+                    res.redirect('/image-artist/' + artworkID);
+                }
+            });
+        } else {
+            res.redirect('/access-denied');
+        }
     });
     return router;
 }();

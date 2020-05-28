@@ -39,27 +39,31 @@ module.exports = function(){
     /* Request for events */
 
     router.get('/', function(req, res){
-        var callbackCount = 0;
-        var context = {};
-        var eventName = req.query.name_search_string;
-        var mysql = req.app.get('mysql');
-        if (eventName == undefined || eventName == "") {
-            getEvents(res, mysql, context, complete);
-        } else {
-            mysql.pool.query("SELECT eventID, name, DATE_FORMAT(startDate, '%a %b %e %Y') startDate, DATE_FORMAT(endDate, '%a %b %e %Y') endDate, TIME_FORMAT(time, '%h %i %p') time, location, city, state, zipCode FROM Events WHERE name LIKE '%" + req.query.name_search_string + "%'", function(error, results, fields){
-                if(error){
-                    res.write(JSON.stringify(error));
-                    res.end();
-                }
-                context.Events = results;
-                complete();
-            })
-        }
-        function complete(){
-            callbackCount++;
-            if(callbackCount >= 1){
-                res.render('events', context);
+        if (req.session.isUser == false) {
+            var callbackCount = 0;
+            var context = {};
+            var eventName = req.query.name_search_string;
+            var mysql = req.app.get('mysql');
+            if (eventName == undefined || eventName == "") {
+                getEvents(res, mysql, context, complete);
+            } else {
+                mysql.pool.query("SELECT eventID, name, DATE_FORMAT(startDate, '%a %b %e %Y') startDate, DATE_FORMAT(endDate, '%a %b %e %Y') endDate, TIME_FORMAT(time, '%h %i %p') time, location, city, state, zipCode FROM Events WHERE name LIKE '%" + req.query.name_search_string + "%'", function(error, results, fields){
+                    if(error){
+                        res.write(JSON.stringify(error));
+                        res.end();
+                    }
+                    context.Events = results;
+                    complete();
+                })
             }
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('events', context);
+                }
+            }
+        } else {
+            res.redirect('/access-denied');
         }
     });
 

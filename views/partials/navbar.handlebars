@@ -5,23 +5,21 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar-text">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/artist-portfolio">Portfolio</a>
-            </li>
             {{#if session.isUser}}
             <li class="nav-item">
-                <a class="nav-link" href="/user-events/{{session.sessInfo.userID}}">User Events Page</a>
+                <a class="nav-link" href="/user-events/{{session.sessInfo.userID}}">Your Events</a>
             </li>
             {{/if}}
+            {{#unless session.isUser}}
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Portfolio</a>
+            </li>
+            {{/unless}}
+            {{#unless session.isUser}}
             <li class="nav-item">
                 <a class="nav-link" href="/events">Artist Events Page</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/image-user">User Image Page</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/test">Test</a>
-            </li>
+            {{/unless}}
             <li class="nav-item">
                 <a class="nav-link">
                     <form class="form-inline my-2 my-sm-0" action="/upload">
