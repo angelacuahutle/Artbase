@@ -60,24 +60,28 @@ module.exports = function(){
     });
 
     router.post('/:id', urlencodedParser, function(req, res) {
-        console.log("LOGGING artworkID")
-        console.log(req.body.artworkID)
-        callbackCount = 0;
-        var context = {};
-        var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO Users_Events (userID, eventID) VALUES "
-        + "((SELECT Users.userID FROM Users WHERE Users.userID=?), "
-        + "(SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
-        var inserts = [req.session.sessInfo.userID, req.body.eventID];
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                console.log(JSON.stringify(error))
-                res.write(JSON.stringify(error));
-                res.end();
-            } else {
-                res.redirect('/image-user/' + req.body.artworkID);
-            }
-        });
+        if (req.session.isUser == true) {
+            console.log("LOGGING artworkID")
+            console.log(req.body.artworkID)
+            callbackCount = 0;
+            var context = {};
+            var mysql = req.app.get('mysql');
+            var sql = "INSERT INTO Users_Events (userID, eventID) VALUES "
+            + "((SELECT Users.userID FROM Users WHERE Users.userID=?), "
+            + "(SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
+            var inserts = [req.session.sessInfo.userID, req.body.eventID];
+            sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+                if(error){
+                    console.log(JSON.stringify(error))
+                    res.write(JSON.stringify(error));
+                    res.end();
+                } else {
+                    res.redirect('/image-user/' + req.body.artworkID);
+                }
+            });
+        } else {
+            res.redirect('/access-denied');
+        }
     })
     return router;
 }();

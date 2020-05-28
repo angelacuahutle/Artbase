@@ -40,18 +40,22 @@ module.exports = function(){
     /* Display a user's events */
 
     router.get('/:id', function(req, res){
-        callbackCount = 0;
-        var context = {};
-        context.jsscripts = [];
-        var id = req.session.sessInfo.userID;
-        var mysql = req.app.get('mysql');
-        getUser(res, mysql, id, context, complete);
-        getUserEvents(res, mysql, id, context, complete);
-        function complete(){
-            callbackCount++;
-            if(callbackCount >= 2){
-                res.render('user-events', context);
+        if (req.session.isUser == true) {
+            callbackCount = 0;
+            var context = {};
+            context.jsscripts = [];
+            var id = req.session.sessInfo.userID;
+            var mysql = req.app.get('mysql');
+            getUser(res, mysql, id, context, complete);
+            getUserEvents(res, mysql, id, context, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 2){
+                    res.render('user-events', context);
+                }
             }
+        } else {
+            res.redirect('/access-denided');
         }
     });
 
