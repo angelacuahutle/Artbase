@@ -6,6 +6,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars');
 var path = require('path');
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 app.use('/static', express.static('public/js'));
 app.use(express.static(__dirname + '/public'));
@@ -42,13 +43,12 @@ app.get('/home',function(req,res){
   if (req.session.loggedin) {
     var context = {}; 
     var callbackCount = 0;
+    context.jsscripts = ["searchjq.js"];
     var mysql = req.app.get('mysql');
     getArtworks(res, mysql, context, complete);
     function complete(){
       callbackCount++;
       if(callbackCount >= 1){
-        context.session = req.session;
-        console.log(context.session)
         res.render('home', context);
       }
     }
@@ -146,22 +146,31 @@ app.get('/user-login',function(req,res,next){
   res.render('user-login');
 });
 
-app.use('/user-signup', require('./user-signup.js'));
+app.use('/user-signup', require('./public/js/user-signup.js'));
 
 app.get('/artist-login',function(req,res,next){
   res.render('artist-login');
 });
 
-app.use('/artist-signup', require('./artist-signup.js'));
+app.use('/artist-signup', require('./public/js/artist-signup.js'));
 
-app.get('/search',function(req,res,next){
-  var context = {};
-  res.render('search', context);
+app.get('/search/:searchTag', urlencodedParser, function(req,res){
+  var context = {}; 
+  var callbackCount = 0; 
+  context.jsscripts = ["searchjq.js"];
+  var mysql = req.app.get('mysql');
+  getArtworksLike(res, mysql, context, req.params.searchTag, complete);
+  function complete() {
+    callbackCount++;
+    if (callbackCount >= 1) {
+      res.render('home', context);
+    }
+  }
 });
 
-app.use('/events', require('./events.js'));
+app.use('/events', require('./public/js/events.js'));
 
-app.use('/artist-portfolio', require('./artist-portfolio.js'));
+app.use('/artist-portfolio', require('./public/js/artist-portfolio.js'));
 
 app.get('/image-router/:id', function(req, res) {
   if (req.session.isUser) {
@@ -173,11 +182,11 @@ app.get('/image-router/:id', function(req, res) {
   }
 })
 
-app.use('/image-artist', require('./image-artist.js'));
+app.use('/image-artist', require('./public/js/image-artist.js'));
 
-app.use('/image-user', require('./image-user.js'));
+app.use('/image-user', require('./public/js/image-user.js'));
 
-app.use('/user-events', require('./user-events.js'));
+app.use('/user-events', require('./public/js/user-events.js'));
 
 app.get('/access-denied', function(req, res) {
   res.render('access-denied');
@@ -207,4 +216,29 @@ function getArtworks(res, mysql, context, complete){
       context.artworks = results;
       complete();
   });
+}
+
+function getArtworksLike(res, mysql, context, searchTag, complete) { 
+  var sql = "SELECT * FROM Artworks "
+    + "JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS artistName FROM Artists) AS fn ON fn.artistID=Artworks.artistID "
+    + "WHERE fn.artistName LIKE " + "\'%" +searchTag + "%\'"
+    + "OR title LIKE " + "\'%" + searchTag + "%\'"
+    + "OR medium LIKE " + "\'%" + searchTag + "%\'"
+    + "OR material LIKE " + "\'%" + searchTag + "%\'"
+    + "OR description LIKE " + "\'%" + searchTag + "%\'"
+    + "LIMIT 20;"
+    console.log("SQL")
+    console.log(sql)
+    console.log("SEARCHTAG")
+    console.log(searchTag)
+    mysql.pool.query(sql, function(error, results, fields) {
+      if(error){
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.artworks = results;
+      console.log(context.artworks);
+      complete();
+    })
 }

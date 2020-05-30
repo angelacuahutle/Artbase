@@ -80,8 +80,8 @@ SELECT * FROM Artists WHERE username=:username_from_artist_login_form, AND passw
 -- Artworks table queries
 -- Search artworks from searchbar on navbar
 SELECT * FROM Artworks
-	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
-    WHERE fn.full_name LIKE '%:search_input%'
+	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS artistName FROM Artists) AS fn ON fn.artistID=Artworks.artistID
+    WHERE fn.artistName LIKE '%:search_input%'
     OR title LIKE '%:search_input%'
     OR medium LIKE '%:search_input%'
     OR material LIKE '%:search_input%'

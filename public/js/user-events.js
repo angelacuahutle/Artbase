@@ -31,7 +31,6 @@ module.exports = function(){
                 res.end();
             }
             context.userEvents = results; 
-            console.log(context.userEvents);
             complete();
         });
     }

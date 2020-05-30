@@ -22,17 +22,12 @@
             {{/unless}}
             <li class="nav-item">
                 <a class="nav-link">
-                    <form class="form-inline my-2 my-sm-0" action="/upload">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
-                    </form>
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" onClick="location.href='/upload'" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
                 </a>
             </li>
         </ul>
         
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-secondary my-2 my-sm-0" id="search-submit" type="submit" onClick="reply_click(this.id)">Search</button>
-        </form>
+        
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkA" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

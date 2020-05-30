@@ -21,10 +21,8 @@ module.exports = function(){
     /* Query for getting a single event to edit */
 
     function getOneEvent(res, mysql, context, id, complete){
-
         var sql = "SELECT eventID, name, DATE_FORMAT(startDate, '%Y-%m-%d') startDate, DATE_FORMAT(endDate, '%Y-%m-%d') endDate, time, location, city, state, zipCode FROM Events WHERE eventID=?";
         var inserts = [id];
-
         mysql.pool.query(sql, inserts, function(error, result, fields){
             if(error){
                 console.log(error);
