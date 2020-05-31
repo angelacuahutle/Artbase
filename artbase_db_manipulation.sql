@@ -88,12 +88,6 @@ SELECT * FROM Artworks
     OR description LIKE '%:search_input%'
     LIMIT 20;
 
-<<<<<<< Updated upstream
--- get the artwork and artist for the image-artist and image-user pages
-SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks aw 
-    LEFT JOIN Artists a on a.artistID = aw.artistID 
-    WHERE aw.artworkID = :artwork_from_route
-=======
 -- get information for an artist
 SELECT CONCAT(firstName, ' ', lastName) AS artistName FROM Artists WHERE artistID=:artistID
 
@@ -109,7 +103,6 @@ SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistI
     LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID 
     LEFT JOIN Artists a on a.artistID = aw.artistID 
     WHERE ae.artworkID = :route_id;
->>>>>>> Stashed changes
 
 -- Artwork rating update
 UPDATE Artworks
@@ -129,7 +122,7 @@ INSERT INTO Artworks_Events (artworkID, eventID) VALUES
 	((SELECT Artworks.artworkID FROM Artworks
 	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
         WHERE Artists.username=:sessions_username AND Artworks.url=:new_artwork_url),
-     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
+     (SELECT Events.eventID FROM Events WHERE Events.eventID=:event_input));
 
 -- Artworks_Events table queries
 -- Disassociate artwork from event

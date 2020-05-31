@@ -60,7 +60,7 @@ module.exports = function(){
     });
 
     router.post('/:id', urlencodedParser, function(req, res) {
-        if (req.session.isUser == true) {
+        if (req.session.isUser) {
             console.log("LOGGING artworkID")
             console.log(req.body.artworkID)
             callbackCount = 0;

@@ -1,40 +1,48 @@
-<!--
-    Inactive for Step 3 Draft
-<head>
-    <script src="js/upload.js" defer></script>
-</head>
+<div class="container-fluid page-container">
+  <div class="row justify-content-center page-row">
+    <div class="col-md-4"></br>
+      <h1>Upload Artwork</h1></br>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <h3>Artwork Details</h3>
+        <div class="form-group">
+          <label for="titleInput">Title</label>
+          <input id="titleInput" class="form-control" type="text" name="title" required>
+        </div>
+        <div class="form-group">
+          <input id="fileInput" class="form-control-file" type="file" name="file" accept="image/png, image/jpeg" required>
+        </div>
+        <div class="form-group">
+          <label for="mediumInput">Medium</label>
+          <input id="mediumInput" class="form-control" type="text" name="medium" required>
+        </div>
+        <div class="form-group">
+          <label for="materialInput">Materials</label>
+          <input id="materialInput" class="form-control" type="text" name="material" placeholder="material1, material2, etc." required>
+        </div>
+        <div class="form-group">
+          <label for="descriptionInput">Description</label>
+          <textarea id="descriptionInput" class="form-control" type="text" name="description" rows="3"></textarea>
+        </div>
 
-<div class="upload-header">
-    <h1>Upload Artwork</h1>
+        <h3>Events</h3>
+        <div class="form-group">
+          <label for="eventsSelect">Select an event where artwork will be displayed</label>
+          <select class="form-control" id="eventsSelect" name="eventSelected" required>
+            {{#each Events}}
+            <option value="{{eventID}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="form-group">
+          <button id="/events" type="button" class="btn btn-link" onClick="location.href = '/events';">Create new event</button>
+        </div>
+        <input id="artistID" name="artistID" type="hidden" value="{{session.sessInfo.artistID}}">
+        <div class="form-group">
+          <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<div class="upload-body">
-    <div class="upload-input">
-        <label for="title-input">Artwork Title</label>
-        <input type="text" id="title-input">
-    </div>
-    <div class="upload-input">
-        <label for="title-input">Artwork Medium</label>
-        <input type="text" id="medium-input">
-    </div>
-    <div class="upload-input">
-        <label for="title-input">Artwork Materials</label>
-        <input type="text" id="materials-input">
-    </div>
-    <div class="upload-input">
-        <label for="title-input">Artwork Description</label>
-        <input type="text" id="desc-input">
-    </div>
-    <div class="upload-input">
-        <label for="title-input">Artwork URL</label>
-        <input type="text" id="url-input">
-    </div>
-    
-    <div class="upload-input">
-        <input type="file" accept="image/*" onchange="loadFile(event)" id="file-input" name="image">
-    </div>
-    <div class="upload-buttons">
-        <button type="button" id="upload-cancel" class="action-button">Cancel</button>
-        <button type="button" id="upload-submit" class="action-button">Upload</button>
-    </div>
-</div>
--->
+
+

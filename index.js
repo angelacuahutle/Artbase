@@ -1,14 +1,26 @@
 var express = require('express');
-var fs = require('fs');
 var mysql = require('./dbcon.js');
 var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars');
 var path = require('path');
+var multer = require('multer');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
+// File storage and upload
+var storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function(req, file, cb){
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+})
+var upload = multer({
+  storage: storage,
+  limits: {fileSize: 1024 * 1024 * 10}
+}).single('file'); //specifies that we want a single file from an upload
 
-app.use('/static', express.static('public/js'));
+
+app.use('/static', express.static('public/js')); //for jsscripts variable
 app.use(express.static(__dirname + '/public'));
 app.use(session({
   secret: 'secret',
@@ -19,7 +31,6 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
@@ -71,22 +82,65 @@ app.get('/test', function(req, res) {
 });
 
 app.get('/upload', function(req,res,next) {
-  var callbackCount = 0;
-  var context = {};
-  context.type = "artist/user";
-  mysql.pool.query("SELECT name FROM Events ORDER BY name ASC", function(error, results, fields){
-    if(error){
-      res.write(JSON.stringify(error));
-      res.end();
-    }   
-    context.Events = results;
-    complete();
-  })
-  function complete(){
-    callbackCount++;
-    if(callbackCount >= 1){
-      res.render('upload-artwork', context);
+  if (req.session.isUser) {
+    res.render('access-denied')
+  } else {
+    var callbackCount = 0;
+    var context = {};
+    context.type = "artist/user";
+    mysql.pool.query("SELECT name, eventID FROM Events ORDER BY name ASC", function(error, results, fields){
+      if(error){
+        res.write(JSON.stringify(error));
+        res.end();
+      }   
+      context.Events = results;
+      complete();
+    })
+    function complete(){
+      callbackCount++;
+      if(callbackCount >= 1){
+        res.render('upload', context);
+      }
     }
+  }
+});
+
+app.post('/upload', function(req, res) {
+  if (!req.session.isUser) {
+    upload(req, res, (err) => {
+      if (err) {
+        res.write(JSON.stringify(err));
+        res.end();
+      } else {
+        var mysql = req.app.get('mysql');
+        var sql = "INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES (?, ?, ?, ?, ?, ?);";
+        var url = '/uploads/' + req.file.filename;
+        var inserts = [req.body.artistID, req.body.title, req.body.medium, req.body.material, req.body.description, url];
+        sql = mysql.pool.query(sql, inserts, function(err, results, fields) {
+          if (err) {
+            console.log(JSON.stringify(err))
+            res.write(JSON.stringify(err));
+            res.end();
+          } else {
+            var sql2 = "INSERT INTO Artworks_Events (artworkID, eventID) VALUES "
+            + "((SELECT Artworks.artworkID FROM Artworks "
+            + "LEFT JOIN Artists ON Artworks.artistID=Artists.artistID "
+            + "WHERE Artists.username=? AND Artworks.url=?), "
+            + "(SELECT Events.eventID FROM Events WHERE Events.eventID=?));";
+            var inserts2 = [req.session.sessInfo.username, url, req.body.eventSelected];
+            sql2 = mysql.pool.query(sql2, inserts2, function(err_, results_, fields_) {
+              if (err_) {
+                console.log(JSON.stringify(err_))
+                res.write(JSON.stringify(err_));
+                res.end();
+              } else {
+                res.redirect('/home');
+              }
+            })
+          }
+        })
+      }
+    });
   }
 });
 
@@ -227,10 +281,6 @@ function getArtworksLike(res, mysql, context, searchTag, complete) {
     + "OR material LIKE " + "\'%" + searchTag + "%\'"
     + "OR description LIKE " + "\'%" + searchTag + "%\'"
     + "LIMIT 20;"
-    console.log("SQL")
-    console.log(sql)
-    console.log("SEARCHTAG")
-    console.log(searchTag)
     mysql.pool.query(sql, function(error, results, fields) {
       if(error){
         console.log(error);
@@ -238,7 +288,6 @@ function getArtworksLike(res, mysql, context, searchTag, complete) {
         res.end();
       }
       context.artworks = results;
-      console.log(context.artworks);
       complete();
     })
 }
