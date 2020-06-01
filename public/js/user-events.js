@@ -54,7 +54,7 @@ module.exports = function(){
                 }
             }
         } else {
-            res.redirect('/access-denided');
+            res.redirect('/access-denied');
         }
     });
 

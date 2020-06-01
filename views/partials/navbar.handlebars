@@ -5,6 +5,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar-text">
         <ul class="navbar-nav mr-auto">
+        <!-- Removed for now to prevent duplicates
             {{#if session.isUser}}
             <li class="nav-item">
                 <a class="nav-link" href="/user-events/{{session.sessInfo.userID}}">Your Events</a>
@@ -12,7 +13,7 @@
             {{/if}}
             {{#unless session.isUser}}
             <li class="nav-item">
-                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Portfolio</a>
+                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Your Portfolio</a>
             </li>
             {{/unless}}
             {{#unless session.isUser}}
@@ -20,6 +21,38 @@
                 <a class="nav-link" href="/events">Artist Events Page</a>
             </li>
             {{/unless}}
+            <li class="nav-item">
+                <a class="nav-link">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" onClick="location.href='/upload'" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
+                </a>
+            </li>
+        -->
+            <!-- All links below are for reviewers to navigate the pages more clearly
+                 Each of the pages below can be reached by clicking on their natural links throught the webpage as well 
+            -->
+            <li class="nav-item">
+                <p>All links for testing: </p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user-events/1">User Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio/1">Artist Portfolio</a>
+            </li>
+            {{#unless session.isUser}}
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Your Portfolio</a>
+            </li>
+            {{/unless}}
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-artist/1">Artist Image</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-user/1">User Image</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link">
                     <button class="btn btn-outline-info my-2 my-sm-0" type="submit" onClick="location.href='/upload'" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>

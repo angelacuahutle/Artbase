@@ -62,7 +62,8 @@ module.exports = function(){
                 }
             }
         } else {
-            res.redirect('/image-user/' + req.params.id);
+            //res.redirect('/image-user/' + req.params.id);
+            res.redirect('/access-denied');
         }
     });
 
