@@ -20,8 +20,9 @@
             </thead>
             <tbody>
               {{#each userEvents}}
+              {{#if name}}
               <tr>
-                <td><button class="btn btn-primary" onclick="deleteUserEvent({{id}})">Remove</button></td>
+                <td><button class="btn btn-primary" onclick="deleteUserEvent({{uid}},{{eid}})">Remove</button></td>
                 <td>{{name}}</td>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
@@ -31,6 +32,7 @@
                 <td>{{state}}</td>
                 <td>{{zipCode}}</td>
               </tr>
+              {{/if}}
               {{/each}}
             </tbody>
         </table>
