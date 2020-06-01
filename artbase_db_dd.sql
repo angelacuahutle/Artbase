@@ -87,19 +87,18 @@ CREATE TABLE `Artworks` (
     `material` varchar(25) NOT NULL,
     `description` varchar(255) NOT NULL,
     `url` varchar(255) UNIQUE NOT NULL,
-    `rating` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`artworkID`),
     CONSTRAINT FOREIGN KEY (`artistID`) REFERENCES Artists(`artistId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO Artworks (artistID, title, medium, material, description, url, rating) VALUES
-    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg', 1),
-    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', '', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg', 30),
-    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg', 5),
-    (4, 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg', 7),
-    (4, 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg', 13),
-    (4, 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg', 1),
-    (4, 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg', 0);
+INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES
+    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', '', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg'),
+    (4, 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg'),
+    (4, 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg'),
+    (4, 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg'),
+    (4, 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg');
 
 CREATE TABLE `Artworks_Events` (
     `artworkID` int(11) NOT NULL,

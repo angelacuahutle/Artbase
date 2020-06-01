@@ -104,16 +104,10 @@ SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistI
     LEFT JOIN Artists a on a.artistID = aw.artistID 
     WHERE ae.artworkID = :route_id;
 
--- Artwork rating update
-UPDATE Artworks
-SET rating=:updated_rating_value
-WHERE artworkID=:selected_artwork;
-
 -- Discover page artwork display
 SELECT artworkID, title, url, Artworks.artistID, CONCAT(firstName, ' ', lastName) AS artistName 
 FROM Artworks 
 JOIN Artists ON Artists.artistID = Artworks.artistID
-ORDER BY rating DESC LIMIT 20;
 
 -- Upload Artwork
 INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES 

@@ -69,18 +69,6 @@ app.get('/home',function(req,res){
   }
 });
 
-app.get('/test', function(req, res) {
-  // test page that outputs available session info
-  var context = {};
-  context.loggedin = req.session.loggedin;
-  context.isUser = req.session.isUser;
-  // sessInfo contains important info like the userID/artistID, username, etc.
-  context.sessInfo = req.session.sessInfo;
-  console.log("req.session:")
-  console.log(req.session);
-  res.render('test', context);
-});
-
 app.get('/upload', function(req,res,next) {
   if (req.session.isUser) {
     res.render('access-denied')
