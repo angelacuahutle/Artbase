@@ -61,8 +61,6 @@ module.exports = function(){
 
     router.post('/:id', urlencodedParser, function(req, res) {
         if (req.session.isUser) {
-            console.log("LOGGING artworkID")
-            console.log(req.body.artworkID)
             callbackCount = 0;
             var context = {};
             var mysql = req.app.get('mysql');
@@ -76,7 +74,7 @@ module.exports = function(){
                     res.write(JSON.stringify(error));
                     res.end();
                 } else {
-                    res.redirect('/image-user/' + req.body.artworkID);
+                    res.redirect('/user-events/' + req.session.sessInfo.userID);
                 }
             });
         } else {

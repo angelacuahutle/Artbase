@@ -1,6 +1,6 @@
 function deleteArtworkEvent(aid, eid){
   $.ajax({
-      url: '/user-events/id/' + aid + '/event/' + eid,
+      url: '/image-artist/artw/' + aid + '/event/' + eid,
       type: 'DELETE',
       success: function(result){
           if(result.responseText != undefined){

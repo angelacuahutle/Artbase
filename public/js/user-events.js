@@ -39,7 +39,7 @@ module.exports = function(){
     /* Display a user's events */
 
     router.get('/:id', function(req, res){
-        if (req.session.isUser == true) {
+        if (req.session.isUser) {
             callbackCount = 0;
             var context = {};
             context.jsscripts = ["deleteUserEvent.js"];
@@ -58,21 +58,25 @@ module.exports = function(){
         }
     });
 
-    router.delete('/id/:uid/event/:eid', function(req, res){
-        console.log(req.params.uid)
-        console.log(req.params.eid)
-        var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM Users_Events WHERE userID = ? AND eventID = ?";
-        var inserts = [req.params.uid, req.params.eid];
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.status(400); 
-                res.end(); 
-            }else{
-                res.status(202).end();
-            }
-        })
+    router.delete('/user/:uid/event/:eid', function(req, res){
+        if (req.session.isUser) {
+            console.log("Deleting user_events row with uid=" + req.params.uid + " and eid=" + req.params.eid);
+            var mysql = req.app.get('mysql');
+            var sql = "DELETE FROM Users_Events WHERE userID = ? AND eventID = ?";
+            var inserts = [req.params.uid, req.params.eid];
+            sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+                if(error){
+                    res.write(JSON.stringify(error));
+                    res.status(400); 
+                    res.end(); 
+                }else{
+                    res.status(202);
+                    res.end();
+                }
+            })
+        } else {
+            res.redirect('/access-denied');
+        }
     })
     
     return router;

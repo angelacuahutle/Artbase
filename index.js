@@ -54,7 +54,7 @@ app.get('/home',function(req,res){
   if (req.session.loggedin) {
     var context = {}; 
     var callbackCount = 0;
-    context.jsscripts = ["searchjq.js"];
+    context.jsscripts = ["search.js"];
     var mysql = req.app.get('mysql');
     getArtworks(res, mysql, context, complete);
     function complete(){
@@ -199,7 +199,7 @@ app.use('/artist-signup', require('./public/js/artist-signup.js'));
 app.get('/search/:searchTag', urlencodedParser, function(req,res){
   var context = {}; 
   var callbackCount = 0; 
-  context.jsscripts = ["searchjq.js"];
+  context.jsscripts = ["search.js"];
   var mysql = req.app.get('mysql');
   getArtworksLike(res, mysql, context, req.params.searchTag, complete);
   function complete() {

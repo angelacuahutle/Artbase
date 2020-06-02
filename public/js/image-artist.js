@@ -90,21 +90,25 @@ module.exports = function(){
         }
     });
 
-    router.delete('/id/:aid/event/:eid', function(req, res){
-        console.log(req.params.aid)
-        console.log(req.params.eid)
-        var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM Artworks_Events WHERE artworkID = ? AND eventID = ?";
-        var inserts = [req.params.aid, req.params.eid];
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.status(400); 
-                res.end(); 
-            }else{
-                res.status(202).end();
-            }
-        })
+    router.delete('/artw/:aid/event/:eid', function(req, res){
+        if (!req.session.isUser) {
+            console.log("Deleting artworks_events row with aid=" + req.params.aid + " and eid=" + req.params.eid);
+            var mysql = req.app.get('mysql');
+            var sql = "DELETE FROM Artworks_Events WHERE artworkID = ? AND eventID = ?";
+            var inserts = [req.params.aid, req.params.eid];
+            sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+                if(error){
+                    res.write(JSON.stringify(error));
+                    res.status(400); 
+                    res.end(); 
+                }else{
+                    res.status(202);
+                    res.end();
+                }
+            })
+        } else {
+            res.redirect('/access-denied');
+        }
     })
 
     return router;
