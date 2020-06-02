@@ -54,7 +54,8 @@ module.exports = function(){
                 }
             }
         } else {
-            res.redirect('/access-denided');
+
+            res.redirect('/access-denied');
         }
     });
 
@@ -74,6 +75,9 @@ module.exports = function(){
             }
         })
     })
+            res.redirect('/access-denied');
+        }
+    });
 
     return router;
 }();
