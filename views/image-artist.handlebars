@@ -35,7 +35,7 @@
                     <tbody>
                       {{#each thisEvents}}
                         <tr>
-                            <td><button type="button" class="btn btn-primary">Remove</button></td>
+                            <td><button class="btn btn-primary"onclick="deleteArtworkEvent({{aid}},{{eid}})">Remove</button></td>
                             <td>{{this.name}}</td>
                             <td>{{this.startDate}}</td>
                             <td>{{this.endDate}}</td>
@@ -74,6 +74,7 @@
                       </div>
                     <input id="artwork-event-artistUsername" name="artistUsername" type="hidden" value="{{thisArtworkAndArtist.username}}">
                     <input id="artwork-event-artworkURL" name="artworkURL" type="hidden" value="{{thisArtworkAndArtist.url}}">
+                    <input id="artwork-event-artworkID" name="artworkID" type="hidden" value="{{thisArtworkAndArtist.artworkID}}">
                       <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
