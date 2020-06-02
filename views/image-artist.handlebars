@@ -35,7 +35,7 @@
                     <tbody>
                       {{#each thisEvents}}
                         <tr>
-                            <td><button type="button" class="btn btn-primary">Remove</button></td>
+                            <td><button class="btn btn-primary"onclick="deleteArtworkEvent({{aid}},{{eid}})">Remove</button></td>
                             <td>{{this.name}}</td>
                             <td>{{this.startDate}}</td>
                             <td>{{this.endDate}}</td>

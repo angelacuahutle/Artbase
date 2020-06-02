@@ -75,9 +75,6 @@ module.exports = function(){
             }
         })
     })
-            res.redirect('/access-denied');
-        }
-    });
 
     return router;
 }();
