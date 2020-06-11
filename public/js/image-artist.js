@@ -98,8 +98,6 @@ module.exports = function(){
         }
     });
 
-    /* Remove event from artwork */
-
     router.delete('/artw/:aid/event/:eid', function(req, res){
         if (!req.session.isUser) {
             console.log("Deleting artworks_events row with aid=" + req.params.aid + " and eid=" + req.params.eid);

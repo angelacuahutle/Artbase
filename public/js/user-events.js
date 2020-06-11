@@ -61,8 +61,6 @@ module.exports = function(){
         }
     });
 
-    /* Remove a user's event */
-
     router.delete('/user/:uid/event/:eid', function(req, res){
         if (req.session.isUser) {
             console.log("Deleting user_events row with uid=" + req.params.uid + " and eid=" + req.params.eid);
