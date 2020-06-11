@@ -5,34 +5,62 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar-text">
         <ul class="navbar-nav mr-auto">
+        <!-- Removed for now to prevent duplicates
+            {{#if session.isUser}}
             <li class="nav-item">
-                <a class="nav-link" href="/artist-portfolio">Portfolio</a>
+                <a class="nav-link" href="/user-events/{{session.sessInfo.userID}}">Your Events</a>
             </li>
+            {{/if}}
+            {{#unless session.isUser}}
             <li class="nav-item">
-                <a class="nav-link" href="/user-events">User Events Page</a>
+                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Your Portfolio</a>
             </li>
+            {{/unless}}
+            {{#unless session.isUser}}
             <li class="nav-item">
                 <a class="nav-link" href="/events">Artist Events Page</a>
             </li>
+            {{/unless}}
             <li class="nav-item">
-                <a class="nav-link" href="/image-user">User Image Page</a>
+                <a class="nav-link">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" onClick="location.href='/upload'" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
+                </a>
+            </li>
+        -->
+            <!-- All links below are for reviewers to navigate the pages more clearly
+                 Each of the pages below can be reached by clicking on their natural links throught the webpage as well 
+            -->
+            <li class="nav-item">
+                <p>Links for testing: </p>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/test">Test</a>
+                <a class="nav-link" href="/user-events/1">User Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio/1">Artist Portfolio</a>
+            </li>
+            {{#unless session.isUser}}
+            <li class="nav-item">
+                <a class="nav-link" href="/artist-portfolio/{{session.sessInfo.artistID}}">Your Portfolio</a>
+            </li>
+            {{/unless}}
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-artist/1">Artist Image</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image-user/1">User Image</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link">
-                    <form class="form-inline my-2 my-sm-0" action="/upload">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
-                    </form>
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" onClick="location.href='/upload'" value="Upload Artwork" id="upload-artwork-button">Upload Artwork</button>
                 </a>
             </li>
         </ul>
         
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-secondary my-2 my-sm-0" id="search-submit" type="submit" onClick="reply_click(this.id)">Search</button>
-        </form>
+        
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkA" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -35,7 +35,15 @@
                   <tbody>
                     {{#each artworksEvents}}
                     <tr>
-                      <td><button type="button" class="btn btn-primary" onclick="addUserEvent()">Attend</button></td>
+                      <td>
+                        {{#if ../session.isUser}}
+                        <form id="add_user_events" action="/image-user/:{{id}}" method="POST" enctype="application/x-www-form-urlencoded">
+                          <input id="eventID" name="eventID" type="hidden" value="{{eventID}}">
+                          <input id="artworkID" name="artworkID" type="hidden" value="{{id}}">
+                          <input id="insert_user_event" type="submit" value="Attend" class="btn btn-primary">
+                        </form>
+                        {{/if}}
+                      </td>
                       <td>{{name}}</td>
                       <td>{{startDate}}</td>
                       <td>{{endDate}}</td>

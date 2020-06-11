@@ -2,7 +2,7 @@
     <div class="row justify-content-center page-row">
         <div class="col-md-3"></br>
         <h1>Artist Sign Up</h1></br>
-        <form>
+        <form action="/artist-signup" method="POST" enctype="application/x-www-form-urlencoded">
             <div class="form-group">
                 <label for="usernameInput">Username</label>
                 <input id="usernameInput" class="form-control" type="text" name="username" required>
@@ -27,7 +27,7 @@
                 <label for="birthdateInput">Birthdate</label>
                 <input id="birthdateInput" class="form-control" type="date" name="birthdate">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="submit" class="btn btn-primary">
         </form>
         </div>
     </div>

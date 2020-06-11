@@ -28,12 +28,12 @@ WHERE name
 LIKE % + :searchedEvents_input + %;
 
 -- get all events to populate events dropdown for associating an artwork to an event
-SELECT name 
+SELECT name, eventID 
 FROM Events 
 ORDER BY name ASC;
 
 -- get all events for an artwork for image-user and image-artist pages
-SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, e.time, e.location, e.city, e.state, e.zipCode
+SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, TIME_FORMAT(e.time, '%h %i %p') AS time, e.location, e.city, e.state, e.zipCode
 FROM Artworks_Events ae
 LEFT JOIN Events e on e.eventID = ae.eventID
 LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID
@@ -49,6 +49,9 @@ VALUES (:username_input, :password_input, :email_input, :birthdate_input);
 -- Login as user
 SELECT * FROM Users WHERE username=:username_from_user_login_form, AND password=:password_from_user_login_form;
 
+-- get user info
+SELECT username FROM Users WHERE userID=:userID;
+
 -- Users_Events table queries
 -- associate an event to a user
 INSERT INTO Users_Events (userID, eventID) VALUES
@@ -56,11 +59,12 @@ INSERT INTO Users_Events (userID, eventID) VALUES
      (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
 
 -- get all events a user is attending
-SELECT e.name, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, e.time, e.location, e.city, e.state, e.zipCode
-FROM Events e 
-INNER JOIN Users_Events u on u.eventID = e.eventID 
-WHERE userID = :userID
-ORDER BY date(startDate) ASC;
+SELECT e.name, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, TIME_FORMAT(e.time, '%h %i %p') AS time, e.location, e.city, e.state, e.zipCode
+    FROM Events e 
+    RIGHT JOIN Users_Events ue ON ue.eventID = e.eventID
+    RIGHT JOIN Users u ON u.userID = ue.userID
+    WHERE u.userID = :userID 
+    ORDER BY date(startDate) ASC;
 
 -- disassociate an event from a user
 DELETE FROM Users_Events WHERE userID = :uid_from_selected_users_and_events_list AND eventID = :eid_from_selected_users_and_events_list;
@@ -76,21 +80,34 @@ SELECT * FROM Artists WHERE username=:username_from_artist_login_form, AND passw
 -- Artworks table queries
 -- Search artworks from searchbar on navbar
 SELECT * FROM Artworks
-	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
-    WHERE fn.full_name LIKE '%:search_input%'
+	JOIN (SELECT Artists.artistID, Artists.username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS artistName FROM Artists) AS fn ON fn.artistID=Artworks.artistID
+    WHERE fn.artistName LIKE '%:search_input%'
     OR title LIKE '%:search_input%'
     OR medium LIKE '%:search_input%'
     OR material LIKE '%:search_input%'
     OR description LIKE '%:search_input%'
     LIMIT 20;
 
--- Artwork rating update
-UPDATE Artworks
-SET rating=:updated_rating_value
-WHERE artworkID=:selected_artwork;
+-- get information for an artist
+SELECT CONCAT(firstName, ' ', lastName) AS artistName FROM Artists WHERE artistID=:artistID
+
+-- get all artworks for an artist for artist-portfolio page
+SELECT artworkID as id, Artworks.artistID, title, url, CONCAT(firstName, ' ', lastName) AS artistName
+    FROM Artworks
+    LEFT JOIN Artists on Artists.artistID = Artworks.artistID
+    WHERE Artworks.artistID=:route_id; 
+
+-- get the artwork and artist for the image-artist page
+SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description 
+    FROM Artworks_Events ae 
+    LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID 
+    LEFT JOIN Artists a on a.artistID = aw.artistID 
+    WHERE ae.artworkID = :route_id;
 
 -- Discover page artwork display
-SELECT * FROM Artworks ORDER BY rating DESC LIMIT 20;
+SELECT artworkID, title, url, Artworks.artistID, CONCAT(firstName, ' ', lastName) AS artistName 
+FROM Artworks 
+JOIN Artists ON Artists.artistID = Artworks.artistID
 
 -- Upload Artwork
 INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES 
@@ -99,12 +116,7 @@ INSERT INTO Artworks_Events (artworkID, eventID) VALUES
 	((SELECT Artworks.artworkID FROM Artworks
 	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
         WHERE Artists.username=:sessions_username AND Artworks.url=:new_artwork_url),
-     (SELECT Events.eventID FROM Events WHERE Events.name=:event_input));
-
--- Portfolio page of an artist
-SELECT * FROM Artworks
-    JOIN (SELECT artistID, username, CONCAT(Artists.firstName, ' ', Artists.lastName) AS full_name FROM Artists) AS fn ON fn.artistID=Artworks.artistID
-    WHERE fn.username=:selected_artist;
+     (SELECT Events.eventID FROM Events WHERE Events.eventID=:event_input));
 
 -- Artworks_Events table queries
 -- Disassociate artwork from event
