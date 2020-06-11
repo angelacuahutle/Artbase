@@ -12,11 +12,14 @@
 				</div>
 			</div>
 			<!-- if artist is logged in looking at their own portfolio -->
+			{{#if isTheArtist}}
 			<div class="card-footer"><a class="card-link" href="/image-artist/{{id}}">View or add events</a>
         	</div>
+			{{else}}
         	<!-- if artist is logged in looking at some other artist's portfolio OR if a user is logged in looking at any artist's portfolio -->
         	<div class="card-footer"><a class="card-link" href="/image-artist/{{id}}">View events</a>
         	</div>
+			{{/if}}
       	</div>
     </div>
 </div>

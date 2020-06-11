@@ -94,14 +94,14 @@ CREATE TABLE `Artworks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES
-    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', 'Abstract oil paint on canvas', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Multicolored', 'Abstract', 'Acrylic, paper canvas', 'Abstract acrylic on canvas', 'https://images.pexels.com/photos/1509534/pexels-photo-1509534.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg');
+    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', '/uploads/pexels-photo-889839.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', 'Abstract oil paint on canvas', '/uploads/pexels-photo-1183992.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Multicolored', 'Abstract', 'Acrylic, paper canvas', 'Abstract acrylic on canvas', '/uploads/file-1590943729906.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', '/uploads/pexels-photo-948331.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/green-and-purple-illustration-2051004.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/multicolored-abstract-art-2065820.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/purple-and-teal-splash-painting-2068898.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/multicolored-abstract-painting-1095624.jpg');
 
 CREATE TABLE `Artworks_Events` (
     `artworkID` int(11) NOT NULL,

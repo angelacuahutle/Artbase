@@ -99,7 +99,7 @@ INSERT INTO Artists (username, firstName, lastName, password, email, birthdate) 
 SELECT * FROM Artists WHERE username=:username_from_artist_login_form, AND password=:password_from_artist_login_form;
 
 -- get artist information for artist-portfolio page DONE
-SELECT CONCAT(firstName, ' ', lastName) AS artistName FROM Artists WHERE artistID=:artistID
+SELECT CONCAT(firstName, ' ', lastName) AS artistName, artistID FROM Artists WHERE artistID=:artistID
 
 -- Artworks table queries
 -- Search artworks from searchbar on navbar DONE 

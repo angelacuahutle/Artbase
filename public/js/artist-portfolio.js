@@ -5,7 +5,7 @@ module.exports = function(){
     /* Query for getting artist info */
 
     function getArtist(res, mysql, context, id, complete){
-        var sql = "SELECT CONCAT(firstName, ' ', lastName) AS artistName FROM Artists WHERE artistID=?";
+        var sql = "SELECT CONCAT(firstName, ' ', lastName) AS artistName, artistID FROM Artists WHERE artistID=?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -48,6 +48,11 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
+                if (context.artist.artistID === req.session.sessInfo.artistID) {
+                    context.isTheArtist = true;
+                } else {
+                    context.isTheArtist = false;
+                }
                 res.render('artist-portfolio', context);
             }
 
