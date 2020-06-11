@@ -4,6 +4,8 @@ module.exports = function(){
     var bodyParser = require('body-parser');
     var urlencodedParser = bodyParser.urlencoded({extended: false});
 
+    /* Query for getting user information */
+
     function getUser(res, mysql, id, context, complete){
         var sql = "SELECT username FROM Users WHERE userID=?";
         var inserts = [id];
@@ -16,6 +18,8 @@ module.exports = function(){
             complete();
         });
     }
+
+    /* Query for getting a user's events */
 
     function getUserEvents(res, mysql, id, context, complete){
         var sql = "SELECT ue.eventID AS eid, ue.userID AS uid, e.name, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, TIME_FORMAT(e.time, '%h %i %p') AS time, e.location, e.city, e.state, e.zipCode "
@@ -35,8 +39,7 @@ module.exports = function(){
         });
     }
 
-
-    /* Display a user's events */
+    /* Display user's events page */
 
     router.get('/:id', function(req, res){
         if (req.session.isUser) {

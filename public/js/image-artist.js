@@ -4,6 +4,8 @@ module.exports = function(){
     var bodyParser = require('body-parser');
     var urlencodedParser = bodyParser.urlencoded({extended: false});
 
+    /* Query for getting events for dropdown */
+
     function getEvents(res, mysql, context, complete){
         mysql.pool.query("SELECT name, eventID FROM Events ORDER BY name ASC", function(error, results, fields){
             if(error){
@@ -14,6 +16,8 @@ module.exports = function(){
             complete();
         });
     }
+
+    /* Query for getting events for an artwork */
 
     function getThisEvents(res, mysql, context, id, complete) {
         var sql="SELECT ae.artworkID AS aid, ae.eventID AS eid, CONCAT(a.firstName, ' ', a.lastName) AS artistName, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, TIME_FORMAT(e.time, '%h %i %p') AS time, e.location, e.city, e.state, e.zipCode FROM Artworks_Events ae LEFT JOIN Events e on e.eventID = ae.eventID LEFT JOIN Artworks aw on aw.artworkID = ae.artworkID LEFT JOIN Artists a on a.artistID = aw.artistID WHERE aw.artworkID = ? ORDER BY date(startDate) ASC;";
@@ -28,6 +32,8 @@ module.exports = function(){
         });
     }
 
+    /* Query for getting artist and artwork info */
+
     function getThisArtworkAndArtist(res, mysql, context, id, complete) {
         var sql = "SELECT CONCAT(a.firstName, ' ', a.lastName) AS artistName, a.username, a.artistID, aw.artworkID, aw.url, aw.title, aw.medium, aw.material, aw.description FROM Artworks aw LEFT JOIN Artists a on a.artistID = aw.artistID WHERE aw.artworkID = ?";
         var inserts = [id];
@@ -41,7 +47,7 @@ module.exports = function(){
         });
     }
 
-    /*Display all events in dropdown */
+    /*Display image-artist page */
 
     router.get('/:id', function(req, res){
         if (req.session.isUser == false) {
@@ -67,6 +73,8 @@ module.exports = function(){
         }
     });
 
+    /* Add new event to artwork */
+
     router.post('/:id', urlencodedParser, function(req, res) {
         if (req.session.isUser == false) {
             var mysql = req.app.get('mysql');
@@ -78,9 +86,9 @@ module.exports = function(){
             var inserts = [artistUsername, artworkURL, newEventInsert];
             sql = mysql.pool.query(sql, inserts, function(error, results, fields){
                 if(error){
+                    res.redirect('/error-page');
                     console.log(JSON.stringify(error))
                     res.write(JSON.stringify(error));
-                    res.end();
                 } else {
                     res.redirect('/image-artist/' + artworkID);
                 }

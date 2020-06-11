@@ -2,9 +2,9 @@ DROP TABLE IF EXISTS `Users`;
 
 CREATE TABLE `Users` (
   `userID` int(11) AUTO_INCREMENT,
-  `username` varchar(25) NOT NULL,
+  `username` varchar(25) NOT NULL UNIQUE,
   `password` varchar(25) NOT NULL,
-  `email` varchar(25) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `birthdate` date,
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS `Events`;
 
 CREATE TABLE `Events` (
   `eventID` int(11) AUTO_INCREMENT,
-  `name` varchar(25) NOT NULL,
+  `name` varchar(25) NOT NULL UNIQUE,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `time` time NOT NULL,
@@ -50,6 +50,8 @@ INSERT INTO Users_Events (userID, eventID) VALUES
      (SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')),
     ((SELECT Users.userID FROM Users WHERE Users.username='caspersv'),
      (SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')),
+    ((SELECT Users.userID FROM Users WHERE Users.username='caspersv'),
+     (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
     ((SELECT Users.userID FROM Users WHERE Users.username='qmoore30'),
      (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
     ((SELECT Users.userID FROM Users WHERE Users.username='alorTay1'),
@@ -60,7 +62,7 @@ INSERT INTO Users_Events (userID, eventID) VALUES
 DROP TABLE IF EXISTS `Artists`;
     
 CREATE TABLE `Artists` ( 
-    `artistID` int AUTO_INCREMENT PRIMARY KEY,
+    `artistID` int(11) AUTO_INCREMENT PRIMARY KEY,
     `username` varchar(25) NOT NULL UNIQUE,
     `password` varchar(25) NOT NULL,
     `firstName` varchar(25) NOT NULL,
@@ -88,17 +90,18 @@ CREATE TABLE `Artworks` (
     `description` varchar(255) NOT NULL,
     `url` varchar(255) UNIQUE NOT NULL,
     PRIMARY KEY (`artworkID`),
-    CONSTRAINT FOREIGN KEY (`artistID`) REFERENCES Artists(`artistId`)
+    CONSTRAINT FOREIGN KEY (`artistID`) REFERENCES Artists(`artistID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO Artworks (artistID, title, medium, material, description, url) VALUES
-    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', 'https://images.pexels.com/photos/889839/pexels-photo-889839.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', '', 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg'),
-    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', 'https://images.pexels.com/photos/948331/pexels-photo-948331.jpeg'),
-    (4, 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2051004/pexels-photo-2051004.jpeg?cs=srgb&dl=green-and-purple-illustration-2051004.jpg&fm=jpg'),
-    (4, 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2065820/pexels-photo-2065820.jpeg?cs=srgb&dl=multicolored-abstract-art-2065820.jpg&fm=jpg'),
-    (4, 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/2068898/pexels-photo-2068898.jpeg?cs=srgb&dl=purple-and-teal-splash-painting-2068898.jpg&fm=jpg'),
-    (4, 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', 'https://images.pexels.com/photos/1095624/pexels-photo-1095624.jpeg?cs=srgb&dl=multicolored-abstract-painting-1095624.jpg&fm=jpg');
+    ((SELECT artistID FROM Artists WHERE username='W W'), 'Brown Wooden Planks', 'Abstract', 'Wood paint, fence wood', 'Painting done on separated fence pickets', '/uploads/pexels-photo-889839.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Blue, Orange, and White Abstract Painting', 'Abstract', 'Oil, paper canvas', 'Abstract oil paint on canvas', '/uploads/pexels-photo-1183992.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='SteveJ45'), 'Multicolored', 'Abstract', 'Acrylic, paper canvas', 'Abstract acrylic on canvas', '/uploads/file-1590943729906.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='KeatG'), 'Beach Wave', 'Photograph', 'none', 'Digitally enhanced photograph of a wave', '/uploads/pexels-photo-948331.jpeg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Teal', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/green-and-purple-illustration-2051004.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'RBG', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/multicolored-abstract-art-2065820.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Splash', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/purple-and-teal-splash-painting-2068898.jpg'),
+    ((SELECT artistID FROM Artists WHERE username='aLamorea'), 'Liquify', 'Painting', 'Watercolor', 'Abstract watercolor on canvas', '/uploads/multicolored-abstract-painting-1095624.jpg');
 
 CREATE TABLE `Artworks_Events` (
     `artworkID` int(11) NOT NULL,
@@ -109,27 +112,17 @@ CREATE TABLE `Artworks_Events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO Artworks_Events (artworkID, eventID) VALUES
-    (
-        (SELECT Artworks.artworkID FROM Artworks
-	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
-        WHERE Artists.username = 'W W'),
-        (SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')
-    ),
-    (
-        (SELECT Artworks.artworkID FROM Artworks
-	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
-        WHERE Artists.username = 'W W'),
-        (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')
-    ),
-    (
-        (SELECT Artworks.artworkID FROM Artworks
-	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
-        WHERE Artists.username = 'SteveJ45'),
-        (SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')
-    ),
-    (
-        (SELECT Artworks.artworkID FROM Artworks
-	    LEFT JOIN Artists ON Artworks.artistID=Artists.artistID
-        WHERE Artists.username = 'KeatG'),
-        (SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')
-    );
+    (1,(SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')),
+    (1,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
+    (1,(SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')),
+    (2,(SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')),
+    (2,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
+    (2,(SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')),
+    (3,(SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')),
+    (3,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
+    (3,(SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')),
+    (4,(SELECT Events.eventID FROM Events WHERE Events.name='Plaza Art Fair')),
+    (5,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
+    (6,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville')),
+    (7,(SELECT Events.eventID FROM Events WHERE Events.name='Bayou City Art Festival')),
+    (8,(SELECT Events.eventID FROM Events WHERE Events.name='Art Fair Nashville'));

@@ -2,9 +2,10 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
+    /* Query for getting artist info */
 
     function getArtist(res, mysql, context, id, complete){
-        var sql = "SELECT CONCAT(firstName, ' ', lastName) AS artistName FROM Artists WHERE artistID=?";
+        var sql = "SELECT CONCAT(firstName, ' ', lastName) AS artistName, artistID FROM Artists WHERE artistID=?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
@@ -18,6 +19,7 @@ module.exports = function(){
         });
     }
 
+    /* Query for getting artwork info */
 
     function getArtistArtworks(res, mysql, context, id, complete) {
         var sql = "SELECT artworkID as id, Artworks.artistID, title, url, CONCAT(firstName, ' ', lastName) AS artistName"
@@ -35,6 +37,8 @@ module.exports = function(){
         });
     }
 
+    /* Display artist-portfolio page */
+
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
@@ -44,13 +48,16 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
+                if (context.artist.artistID === req.session.sessInfo.artistID) {
+                    context.isTheArtist = true;
+                } else {
+                    context.isTheArtist = false;
+                }
                 res.render('artist-portfolio', context);
             }
 
         }
     });
-
-
 
     return router;
 }();
