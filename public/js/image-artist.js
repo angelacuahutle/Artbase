@@ -28,6 +28,13 @@ module.exports = function(){
                 res.end();
             }
             context.thisEvents = results;
+            if (context.thisEvents.length < 2) {
+                context.noRemove = true;
+            } else {
+                context.noRemove = false;
+            }
+            console.log(context.thisEvents)
+            console.log(context.noRemove)
             complete();
         });
     }
