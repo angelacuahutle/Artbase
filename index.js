@@ -41,7 +41,7 @@ app.engine('handlebars', handlebars({extname: 'handlebars',
                                     partialsDir: [path.join(__dirname, 'views/partials')]}));
 app.set('view engine', 'handlebars');
 app.set('mysql', mysql);
-app.set('port', 7791);
+app.set('port', 7792);
 
 app.get('/', function(req,res) {
   if(req.session.loggedin) {
@@ -54,7 +54,7 @@ app.get('/home',function(req,res){
   if (req.session.loggedin) {
     var context = {}; 
     var callbackCount = 0;
-    context.jsscripts = ["searchjq.js"];
+    context.jsscripts = ["search.js"];
     var mysql = req.app.get('mysql');
     getArtworks(res, mysql, context, complete);
     function complete(){
@@ -199,7 +199,7 @@ app.use('/artist-signup', require('./public/js/artist-signup.js'));
 app.get('/search/:searchTag', urlencodedParser, function(req,res){
   var context = {}; 
   var callbackCount = 0; 
-  context.jsscripts = ["searchjq.js"];
+  context.jsscripts = ["search.js"];
   var mysql = req.app.get('mysql');
   getArtworksLike(res, mysql, context, req.params.searchTag, complete);
   function complete() {
@@ -232,6 +232,10 @@ app.use('/user-events', require('./public/js/user-events.js'));
 
 app.get('/access-denied', function(req, res) {
   res.render('access-denied');
+})
+
+app.get('/error-page', function(req, res) {
+  res.render('error-page');
 })
 
 app.use(function(req,res){

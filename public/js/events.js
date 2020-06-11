@@ -89,9 +89,9 @@ module.exports = function(){
         var inserts = [req.body.name, req.body.startDate, req.body.endDate, req.body.time, req.body.location, req.body.city, req.body.state, req.body.zipCode];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
+                res.redirect('/error-page');
                 console.log(JSON.stringify(error))
                 res.write(JSON.stringify(error));
-                res.end();
             }else{
                 res.redirect('/events');
             }

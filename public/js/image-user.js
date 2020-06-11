@@ -4,6 +4,7 @@ module.exports = function(){
     var bodyParser = require('body-parser');
     var urlencodedParser = bodyParser.urlencoded({extended: false});
 
+    /* Query for getting artist and artwork info */
 
     function getArtistArtwork(res, mysql, context, id, complete){
         var sql = "SELECT CONCAT(firstName, ' ', lastName) AS artistName, artworkID AS id, Artists.artistID, title, medium, material, description, url "
@@ -21,6 +22,7 @@ module.exports = function(){
         });
     }
 
+    /* Query for getting events for an artwork */
 
     function getEventsForArtistArtwork(res, mysql, context, id, complete){
         var sql = "SELECT ae.artworkID AS id, ae.eventID, e.name, aw.url, aw.title, aw.medium, aw.material, aw.description, DATE_FORMAT(e.startDate, '%a %b %e %Y') AS startDate, DATE_FORMAT(e.endDate, '%a %b %e %Y') AS endDate, TIME_FORMAT(e.time, '%h %i %p') AS time, e.location, e.city, e.state, e.zipCode "
@@ -42,7 +44,7 @@ module.exports = function(){
     }
 
 
-    /* Display artwork information for specific artwork */
+    /* Display image-user page */
 
     router.get('/:id', function(req, res){
         callbackCount = 0;
@@ -59,10 +61,10 @@ module.exports = function(){
         }
     });
 
+    /* Add new event to user */
+
     router.post('/:id', urlencodedParser, function(req, res) {
         if (req.session.isUser) {
-            console.log("LOGGING artworkID")
-            console.log(req.body.artworkID)
             callbackCount = 0;
             var context = {};
             var mysql = req.app.get('mysql');
@@ -72,11 +74,11 @@ module.exports = function(){
             var inserts = [req.session.sessInfo.userID, req.body.eventID];
             sql = mysql.pool.query(sql, inserts, function(error, results, fields){
                 if(error){
+                    res.redirect('/error-page');
                     console.log(JSON.stringify(error))
                     res.write(JSON.stringify(error));
-                    res.end();
                 } else {
-                    res.redirect('/image-user/' + req.body.artworkID);
+                    res.redirect('/user-events/' + req.session.sessInfo.userID);
                 }
             });
         } else {
